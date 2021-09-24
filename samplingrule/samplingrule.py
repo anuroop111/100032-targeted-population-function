@@ -31,14 +31,6 @@ def dowellsamplingrule():
             print('sample size is not adequate as per this condition')
             return False,n
 
-    
-        
-        
-        
-
-
-
-
 def dowellsamplesize():
     return int(input())
 
