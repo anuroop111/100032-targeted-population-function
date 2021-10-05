@@ -22,6 +22,14 @@ def hello_name():
             d = int(stages_form_data['datatype'][i])
             if d == 0:
                 break
+            if d == 7:
+                stage['d']=7
+                stage['p_r_selection']=stages_form_data['p_r_selection'][0]
+                stage['proportion']=int(stages_form_data['proportion'][0])
+                stage['first_position']=int(stages_form_data['first_position'][0])
+                stage['last_position']=int(stages_form_data['last_position'][0])
+                stage_input_list.append(stage)
+                continue
             stage['d'] = d
             stage['m_or_A_selction']=stages_form_data['max_or_agv'][i]
             stage['m_or_A_value']=float(stages_form_data['max_avg_val'][i])

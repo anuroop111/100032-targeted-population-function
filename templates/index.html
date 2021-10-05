@@ -279,56 +279,41 @@
       </div>
 
 
+      <div class="row">lot inputs</div>
+            <div class="row">
+              <div class="col">
+                <input name="datatype" type="number" class="form-control" placeholder="datatype(d)" value="7" disabled/>
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <select name="p_r_selection" class="form-select" aria-label="Default select example">
+                    <option value="proportion">Proportion</option>
+                    <option value="random_generation">random generation</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <input name="proportion" type="number" class="form-control" placeholder="lot size(l)" />
+              </div>
+              <div class="col">
+                <input name="first_position" type="number" class="form-control" placeholder="first position" />
+              </div>
+
+
+              <div class="col">
+                <input name="last_position" type="number" class="form-control" placeholder="last position" />
+              </div>
+
+
+            </div>
+
+
+
 
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <div id="stage-div-hidden" style="display: none">
-      <div class="row">
-        <div class="col">
-          <input type="number" class="form-control" placeholder="d" />
-        </div>
-
-        <div class="col">
-          <div class="mb-3">
-            <select class="form-select" aria-label="Default select example">
-              <option value="gsheet">Maximum Point</option>
-              <option value="mongodb">Population Average</option>
-            </select>
-          </div>
-        </div>
-
-
-        <div class="col">
-          <input type="number" class="form-control" placeholder="m/A" />
-        </div>
-
-
-        <div class="col">
-          <input type="number" class="form-control" placeholder="m/A" />
-        </div>
-
-        <div class="col">
-          <input type="number" class="form-control" placeholder="range(r)" />
-        </div>
-
-        <div class="col">
-          <input type="number" class="form-control" placeholder="start point" />
-        </div>
-
-        <div class="col">
-          <input type="number" class="form-control" placeholder="end poin" />
-        </div>
-
-        <div class="col">
-          <input
-            type="number"
-            class="form-control"
-            placeholder="number of units (a)"
-          />
-        </div>
-      </div>
-    </div>
 
     <script
       src="https://code.jquery.com/jquery-3.6.0.js"

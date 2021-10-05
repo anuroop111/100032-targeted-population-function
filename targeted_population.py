@@ -5,9 +5,8 @@ import requests
 import pprint
 import pandas
 import datetime
-from google_spreadsheet.gsheet import GSpreadSheet
+import random
 
-SPREADSHEET_ID='1jrFnAn4sw56oo9NY1lG4xqmbB8mvAf7mz2-uN4nHXM4'
 from samplingrule.samplingrule import dowellsamplingrule
 from distribution.distribution import dowelldistribution
 
@@ -88,6 +87,31 @@ def call_dowellconnection_with_query(query):
     print(data)
 
     return data
+
+def filter_lot_database(df,stage ):
+    proportion_selection = stage['p_r_selection']
+    first_position = stage['first_position']
+    last_position = stage['last_position']
+
+
+
+    if proportion_selection == "proportion":
+        proportion=stage['proportion']
+        if proportion == (last_position-first_position+1):
+            df=df[first_position-1:last_position]
+            return df
+        else:
+            return pandas.DataFrame([])
+    else:
+        dataframe_size = len(df.index)
+        random_lot_size = random.randint(0, dataframe_size)
+        if first_position+random_lot_size-1>dataframe_size:
+            return pandas.DataFrame([])
+        else:
+            df=df[first_position-1:random_lot_size]
+            return df
+
+
 
 def filter_df_population_average(df, column_name,stage ):
     newpanda= df.sort_values(by=[column_name])
@@ -187,14 +211,18 @@ def filter_df_max_point(df, column_name,stage ):
     r=stage['r']
     range_end =start + r
     end = float(stage['end_point'])
+    error_percent = stage['error']
     max_sum = stage['m_or_A_value']
+
+    max_sum_min = max_sum - max_sum*error_percent/100
+    max_sum_max = max_sum + max_sum*error_percent/100
     a=stage['a']
 
     taken = 0
     summation =0
 
     for index, row in newpanda.iterrows():
-        if summation >= max_sum or row[column_name]>end:
+        if summation >= max_sum_max or row[column_name]>end:
             newpanda.drop(index, inplace=True)
             continue
 
@@ -202,7 +230,7 @@ def filter_df_max_point(df, column_name,stage ):
             if taken >=a:
                 newpanda.drop(index, inplace=True)
             else:
-                if summation+row[column_name]< max_sum:
+                if summation+row[column_name]< max_sum_max:
                     taken = taken+1
                     summation=summation+row[column_name]
                 else:
@@ -213,7 +241,7 @@ def filter_df_max_point(df, column_name,stage ):
                 start = range_end
                 range_end = start + r
                 if start < row[column_name] and row[column_name] < range_end:
-                    if summation+row[column_name]< max_sum:
+                    if summation+row[column_name]< max_sum_max:
                         taken = taken+1
                         summation=summation+row[column_name]
                     else:
@@ -227,7 +255,12 @@ def filter_df_max_point(df, column_name,stage ):
     #print('stage :d=1, start=0, end =1000, r=100, a=2')
     print(newpanda)
     print("------filtered: "+str(stage['d'])+"--------------")
-    return newpanda
+
+    if summation>=max_sum_min and summation<=max_sum_max:
+        return newpanda
+    else:
+        return pandas.DataFrame([])
+
 
 
 def dowelltargetedpopulation(database, S, stage_input_list):
@@ -293,6 +326,10 @@ def dowelltargetedpopulation(database, S, stage_input_list):
         elif d==6:
             continue
         elif d==7:
+            print("here")
+            df = filter_lot_database(df,stage)
+            if df.empty:
+                return "selection is not matching the required lot size"
             continue
 
     return df
