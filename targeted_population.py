@@ -92,18 +92,18 @@ def filter_lot_database(df,stage ):
     proportion_selection = stage['p_r_selection']
     first_position = stage['first_position']
     last_position = stage['last_position']
-
+    dataframe_size = len(df.index)
 
 
     if proportion_selection == "proportion":
-        proportion=stage['proportion']
-        if proportion == (last_position-first_position+1):
-            df=df[first_position-1:last_position]
+        lot_size=int(dataframe_size*stage['proportion']/100)
+        if first_position+lot_size-1<=dataframe_size:
+            df=df[first_position-1:lot_size]
             return df
         else:
             return pandas.DataFrame([])
     else:
-        dataframe_size = len(df.index)
+
         random_lot_size = random.randint(0, dataframe_size)
         if first_position+random_lot_size-1>dataframe_size:
             return pandas.DataFrame([])
@@ -296,7 +296,7 @@ def dowelltargetedpopulation(database, S, stage_input_list):
                 df = filter_df_max_point(df, 'C/10001', stage)
             if df.empty:
                 print("not matched for ",d)
-                return "not matched for datatype "+str(d)
+                return  "not matched for datatype "+str(d),  "Not Success"
         elif d==2:
             if stage['m_or_A_selction'] == 'population_average':
                 df = filter_df_population_average(df, 'B/10002', stage)
@@ -304,7 +304,7 @@ def dowelltargetedpopulation(database, S, stage_input_list):
                 df = filter_df_max_point(df, 'B/10002', stage)
             if df.empty:
                 print("not matched for ",d)
-                return "not matched for datatype "+str(d)
+                return "not matched for datatype "+str(d), "Not Success"
         elif d==3:
             if stage['m_or_A_selction'] == 'population_average':
                 df = filter_df_population_average(df, 'C/10003', stage)
@@ -312,7 +312,7 @@ def dowelltargetedpopulation(database, S, stage_input_list):
                 df = filter_df_max_point(df, 'C/10003', stage)
             if df.empty:
                 print("not matched for ",d)
-                return "not matched for datatype "+str(d)
+                return "not matched for datatype "+str(d),  "Not Success"
         elif d==4:
             if stage['m_or_A_selction'] == 'population_average':
                 df = filter_df_population_average(df, 'D/10004', stage)
@@ -320,7 +320,7 @@ def dowelltargetedpopulation(database, S, stage_input_list):
                 df = filter_df_max_point(df, 'D/10004', stage)
             if df.empty:
                 print("not matched for ",d)
-                return "not matched for datatype "+str(d)
+                return "not matched for datatype "+str(d),  "Not Success"
         elif d==5:
             continue
         elif d==6:
@@ -329,10 +329,14 @@ def dowelltargetedpopulation(database, S, stage_input_list):
             print("here")
             df = filter_lot_database(df,stage)
             if df.empty:
-                return "selection is not matching the required lot size"
+                return "selection is not matching the required lot size", "Not Success"
             continue
 
-    return df
+    #dowellsamplingrule(size of data, number of category)
+    n=len(df.index)
+    is_acceptable, status = dowellsamplingrule(n, 1)
+
+    return df, status
 
 
 #    if database == 'spreadsheet':

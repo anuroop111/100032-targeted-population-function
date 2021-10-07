@@ -41,12 +41,13 @@ def hello_name():
             stage_input_list.append(stage)
 
         print("stage input fil",stage_input_list)
-        targeted_population = dowelltargetedpopulation('mongodb', S, stage_input_list)
+        targeted_population, status = dowelltargetedpopulation('mongodb', S, stage_input_list)
+        status_html = '<p><b>Sampling rule: </b>'+ status + '</p>'
         if isinstance(targeted_population, pandas.DataFrame):
             #targeted_population.loc["Sum"]=targeted_population.sum()
             df_html = targeted_population.to_html()
             describe_html = targeted_population.agg({'C/10001':['sum','mean','std'],'B/10002':['sum','mean','std',],'C/10003':['sum','mean','std',],'D/10004':['sum','mean','std',]}).to_html()
-            resp = make_response(render_template_string(df_html+'<br><br>'+describe_html))
+            resp = make_response(render_template_string(df_html+'<br><br>'+describe_html+ '<br><br>'+status_html))
             return resp
         return targeted_population
 
