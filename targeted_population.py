@@ -263,7 +263,7 @@ def filter_df_max_point(df, column_name,stage ):
 
 
 
-def dowelltargetedpopulation(database, S, stage_input_list):
+def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
 
     #Define number of stages as variable "S"
     #stage_input_list[0]['d'] = 5
@@ -334,7 +334,7 @@ def dowelltargetedpopulation(database, S, stage_input_list):
 
     #dowellsamplingrule(size of data, number of category)
     n=len(df.index)
-    is_acceptable, status = dowellsamplingrule(n, 1)
+    is_acceptable,sample_size, status = dowellsamplingrule(n, 1,number_of_variable)
 
     return df, status
 
@@ -397,4 +397,4 @@ stage_input_list = [
 
 ]
 
-dowelltargetedpopulation(database, stages, stage_input_list)
+dowelltargetedpopulation(database, stages,1, stage_input_list)

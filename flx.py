@@ -16,6 +16,7 @@ def hello_name():
     if request.method == 'POST':
         stages_form_data = request.form.to_dict(flat=False)
         S = int(stages_form_data['n_stage'][0])
+        number_of_variable = int(stages_form_data['number_of_variable'][0])
         stage_input_list=[]
         for i in range(0,S):
             stage = {}
@@ -41,7 +42,7 @@ def hello_name():
             stage_input_list.append(stage)
 
         print("stage input fil",stage_input_list)
-        targeted_population, status = dowelltargetedpopulation('mongodb', S, stage_input_list)
+        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list)
         status_html = '<p><b>Sampling rule: </b>'+ status + '</p>'
         if isinstance(targeted_population, pandas.DataFrame):
             #targeted_population.loc["Sum"]=targeted_population.sum()
