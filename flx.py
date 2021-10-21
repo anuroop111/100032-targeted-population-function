@@ -5,10 +5,22 @@ import json
 from targeted_population import dowelltargetedpopulation
 app = Flask(__name__)
 
-
 @app.route('/')
 def index():
    return render_template('index.html')
+
+@app.route('/api/targeted_population/app',methods = ['POST',])
+def targeted_population_json_response():
+    if request.method == 'POST':
+        stages_form_data=request.get_json()
+        S = stages_form_data['n_stage']
+        number_of_variable = stages_form_data['number_of_variable']
+        stage_input_list = stages_form_data['stages']
+        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list)
+
+        if isinstance(targeted_population, pandas.DataFrame):
+            return {'isError':False, 'data':targeted_population.to_dict('dict'), 'sampling_status':status}
+        return {'isError':True, 'data':targeted_population, 'status':'error'}
 
 
 @app.route('/api/targeted_population',methods = ['GET', 'POST'])

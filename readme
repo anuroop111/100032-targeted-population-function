@@ -1,0 +1,33 @@
+database='spreadsheet'
+stages = 3
+
+stage_input_list = [
+    {
+        'd':5,
+        'm_or_A_selction':'maximum_point',
+        'm_or_A_value': 100,
+        'error':10,
+        'r':2,
+        'start_point': '2021/01/08',
+        'end_point': '2021/01/25',
+        'a': 3,
+    },
+    {
+        'd':1,
+        'm_or_A_selction':'population_average',
+        'm_or_A_value': 300,
+        'error':10,
+        'r':100,
+        'start_point': 0,
+        'end_point': 700,
+        'a': 2,
+     },
+    {
+        'd':7,
+        'p_r_selection':'proportion',
+        'proportion':20,
+        'first_position':1,
+        'last_position':2,
+        
+    }
+]

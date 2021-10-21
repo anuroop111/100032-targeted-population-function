@@ -59,7 +59,7 @@ def call_dowellconnection_with_query(query):
     url = 'http://100002.pythonanywhere.com/'
     data={
       "cluster": "FB",
-      "database": "mongodb",
+      "database": "blr",
       "collection": "day001",
       "document": "day001",
       "team_member_ID": "12345432",
@@ -83,8 +83,8 @@ def call_dowellconnection_with_query(query):
 
     response = requests.post(url, json =data,headers=headers)
     data=response.text
-    print('response')
-    print(data)
+    # print('response')
+    # print(data)
 
     return data
 
@@ -115,9 +115,9 @@ def filter_lot_database(df,stage ):
 
 def filter_df_population_average(df, column_name,stage ):
     newpanda= df.sort_values(by=[column_name])
-    print('main data:')
-    print(newpanda)
-    print('------------'+ str(stage['d'])+"----------------")
+    # print('main data:')
+    # print(newpanda)
+    # print('------------'+ str(stage['d'])+"----------------")
 
     start = float(stage['start_point'])
     r=stage['r']
@@ -188,10 +188,10 @@ def filter_df_population_average(df, column_name,stage ):
     except:
         current_mean=0
 
-    print(newpanda)
-    print("population_average ",population_average, population_average_min, population_average_max)
-    print("current_mean", current_mean)
-    print("------filtered: "+str(stage['d'])+"--------------")
+    # print(newpanda)
+    # print("population_average ",population_average, population_average_min, population_average_max)
+    # print("current_mean", current_mean)
+    # print("------filtered: "+str(stage['d'])+"--------------")
 
     if current_mean>=population_average_min and current_mean<=population_average_max:
         return newpanda
@@ -203,9 +203,9 @@ def filter_df_population_average(df, column_name,stage ):
 
 def filter_df_max_point(df, column_name,stage ):
     newpanda= df.sort_values(by=[column_name])
-    print('main data:')
-    print(newpanda)
-    print('------------'+ str(stage['d'])+"----------------")
+    # print('main data:')
+    # print(newpanda)
+    # print('------------'+ str(stage['d'])+"----------------")
 
     start = float(stage['start_point'])
     r=stage['r']
@@ -253,8 +253,8 @@ def filter_df_max_point(df, column_name,stage ):
 
 
     #print('stage :d=1, start=0, end =1000, r=100, a=2')
-    print(newpanda)
-    print("------filtered: "+str(stage['d'])+"--------------")
+    # print(newpanda)
+    # print("------filtered: "+str(stage['d'])+"--------------")
 
     if summation>=max_sum_min and summation<=max_sum_max:
         return newpanda
@@ -275,7 +275,7 @@ def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
     print(query)
     response_json = call_dowellconnection_with_query(query)
     print("response",response_json)
-    print("-----------------------start-----------------------------")
+    #print("-----------------------start-----------------------------")
     df = pandas.DataFrame(json.loads(response_json))
     df = df.astype({'C/10001':'float64','B/10002':'float64','C/10003':'float64','D/10004':'float64'})
 
@@ -326,7 +326,7 @@ def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
         elif d==6:
             continue
         elif d==7:
-            print("here")
+
             df = filter_lot_database(df,stage)
             if df.empty:
                 return "selection is not matching the required lot size", "Not Success"
@@ -357,44 +357,41 @@ def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
 
 
 
+
 database='spreadsheet'
 stages = 3
 
 stage_input_list = [
-    {
-        'd':5,
-        'm_or_A_selction':'maximum_point',
-        'm_or_A_value': 100,
-        'error':10,
-        'r':2,
-        'start_point': '2021/01/08',
-        'end_point': '2021/01/25',
-        'a': 3,
-    },
-    {
-        'd':1,
-        'm_or_A_selction':'population_average',
-        'm_or_A_value': 300,
-        'error':10,
-        'r':100,
-        'start_point': 0,
-        'end_point': 700,
-        'a': 2,
+     {
+         'd':5,
+         'm_or_A_selction':'maximum_point',
+         'm_or_A_value': 100,
+         'error':10,
+         'r':2,
+         'start_point': '2021/01/08',
+         'end_point': '2021/01/25',
+         'a': 3,
      },
-    {
-        'd':2,
-        'm_or_A_selction':'maximum_point',
-        'm_or_A_value': 700,
-        'error':30,
-        'r':100,
-        'start_point': 0,
-        'end_point': 1000,
-        'a': 1,
+     {
+         'd':1,
+         'm_or_A_selction':'population_average',
+         'm_or_A_value': 300,
+         'error':10,
+         'r':100,
+         'start_point': 0,
+         'end_point': 700,
+         'a': 2,
+      },
+     {
+         'd':2,
+         'm_or_A_selction':'maximum_point',
+         'm_or_A_value': 700,
+         'error':30,
+         'r':100,
+         'start_point': 0,
+         'end_point': 1000,
+         'a': 1,
     }
-
-
-
-
-]
+ ]
 
 dowelltargetedpopulation(database, stages,1, stage_input_list)
