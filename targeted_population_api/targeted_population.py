@@ -1,7 +1,7 @@
 import json
 import requests
 def targeted_population(database, n_stage, number_of_variables, stage_input_list):
-    url = 'http://127.0.0.1:5000/api/targeted_population/app'
+    url = 'http://100032.pythonanywhere.com/api/targeted_population/app'
     request_data={
         'database':database,
         'n_stage':n_stage,
