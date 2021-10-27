@@ -31,8 +31,11 @@ For more details understanding look onto the example below
 #import the targeted topulation function
 from targeted_population_api.targeted_population import targeted_population
 
-#name of database
-database='mongodb'
+#name of details
+database_name='mongodb'
+database='Bangalore'
+collection='day001'
+
 #number of stage
 n_stage = 3
 #number of variables
@@ -64,5 +67,5 @@ stage_input_list = [
 ]
 
 #call the function
-data=targeted_population(database, n_stage, number_of_variables, stage_input_list)
+data=targeted_population(database_name, n_stage, number_of_variables, stage_input_list, collection, database)
 print(data)

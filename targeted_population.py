@@ -54,13 +54,13 @@ def populate_db_query(database,stage_input_list):
 
     return query
 
-def call_dowellconnection_with_query(query):
+def call_dowellconnection_with_query(query, collection, database):
 
     url = 'http://100002.pythonanywhere.com/'
     data={
       "cluster": "FB",
       "database": "blr",
-      "collection": "day001",
+      "collection": collection,
       "document": "day001",
       "team_member_ID": "12345432",
       "function_ID": "ABCDE",
@@ -76,7 +76,7 @@ def call_dowellconnection_with_query(query):
         "language": "Englis",
 
        },
-      "platform": "Bangalore",
+      "platform": database,
       "query":query
     }
     headers = {'content-type': 'application/json'}
@@ -263,7 +263,7 @@ def filter_df_max_point(df, column_name,stage ):
 
 
 
-def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
+def dowelltargetedpopulation(database_type, S,number_of_variable, stage_input_list, collection="day001", database="Banglore"):
 
     #Define number of stages as variable "S"
     #stage_input_list[0]['d'] = 5
@@ -273,7 +273,7 @@ def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
 
     print("query---")
     print(query)
-    response_json = call_dowellconnection_with_query(query)
+    response_json = call_dowellconnection_with_query(query, collection, database)
     print("response",response_json)
     #print("-----------------------start-----------------------------")
     df = pandas.DataFrame(json.loads(response_json))
@@ -355,7 +355,24 @@ def dowelltargetedpopulation(database, S,number_of_variable, stage_input_list):
 #        #dowellenventcreation()
 
 
+import pymongo
 
+def fetch_collections(database):
+    myclient = pymongo.MongoClient("mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority")
+
+    mydb = myclient[database]
+
+    #list the collections
+    print("fetching mongodb")
+    for coll in mydb.list_collection_names():
+        print(coll)
+    return mydb.list_collection_names()
+
+def fetch_databases():
+    myclient = pymongo.MongoClient("mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority")
+
+    dbs = myclient.list_database_names()
+    return dbs
 
 
 database='spreadsheet'

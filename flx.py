@@ -2,21 +2,30 @@ from flask import Flask, render_template, make_response, render_template_string
 from flask import request
 import pandas
 import json
-from targeted_population import dowelltargetedpopulation
+from targeted_population import dowelltargetedpopulation, fetch_collections, fetch_databases
 app = Flask(__name__)
 
 @app.route('/')
 def index():
    return render_template('index.html')
 
+@app.route('/mongodb')
+def mongodb():
+    collections = []
+    databases = fetch_databases()
+    return render_template('index.html', collections=collections, databases=databases)
+
 @app.route('/api/targeted_population/app',methods = ['POST',])
 def targeted_population_json_response():
     if request.method == 'POST':
         stages_form_data=request.get_json()
         S = stages_form_data['n_stage']
+        database= stages_form_data['database']
+        collection= stages_form_data['collection']
+
         number_of_variable = stages_form_data['number_of_variable']
         stage_input_list = stages_form_data['stages']
-        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list)
+        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list ,collection=collection,database=database)
 
         if isinstance(targeted_population, pandas.DataFrame):
             return {'isError':False, 'data':targeted_population.to_dict('dict'), 'sampling_status':status}
@@ -27,7 +36,22 @@ def targeted_population_json_response():
 def hello_name():
     if request.method == 'POST':
         stages_form_data = request.form.to_dict(flat=False)
+
+        database=stages_form_data['database_name'][0]
+        print("database", database)
+        databases = fetch_databases()
+        if database == 'Select database':
+            return render_template('index.html', collections=[], databases=databases)
+
+        collection=stages_form_data['collection'][0]
+        print("database", collection)
+        if collection == "Select collections":
+            collections = fetch_collections(database)
+            return render_template('index.html', collections=collections, databases=databases)
+
         S = int(stages_form_data['n_stage'][0])
+
+        print("----------------------", collection)
         number_of_variable = int(stages_form_data['number_of_variable'][0])
         stage_input_list=[]
         for i in range(0,S):
@@ -54,7 +78,7 @@ def hello_name():
             stage_input_list.append(stage)
 
         print("stage input fil",stage_input_list)
-        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list)
+        targeted_population, status = dowelltargetedpopulation('mongodb', S,number_of_variable, stage_input_list,collection=collection,database=database)
         status_html = '<p><b>Sampling rule: </b>'+ status + '</p>'
         if isinstance(targeted_population, pandas.DataFrame):
             #targeted_population.loc["Sum"]=targeted_population.sum()

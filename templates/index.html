@@ -12,11 +12,9 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-
-
-
     <title>targeted population</title>
   </head>
+
   <body>
     <form id="targeted-population-form" action="/api/targeted_population" method="POST" target="_blank" class="m-4" enctype="application/json">
       <div class="mb-3">
@@ -27,6 +25,26 @@
           <option value="mysql">MySQL</option>
         </select>
       </div>
+
+      <div class="mb-3">
+        <select  name="database_name" class="form-select" aria-label="Default select example">
+          <option vlaue="not_selected" selected>Select database</option>
+          {% for database in databases %}
+          <option value="{{database}}">{{database}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <select  name="collection" class="form-select" aria-label="Default select example">
+          <option vlaue="not_selected"  selected>Select collections</option>
+          {% for collection in collections %}
+          <option value="{{collection}}">{{collection}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label"
           >Number of Stages</label
