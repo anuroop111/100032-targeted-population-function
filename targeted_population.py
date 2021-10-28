@@ -6,9 +6,46 @@ import pprint
 import pandas
 import datetime
 import random
+import pymongo
 
 from samplingrule.samplingrule import dowellsamplingrule
 from distribution.distribution import dowelldistribution
+
+HOST="mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority"
+
+
+def fetch_fields_from_db(fields,database,collection):
+
+    projection = {'_id':0}
+    for field in fields:
+        projection[field]=1
+
+    client =  pymongo.MongoClient(HOST)
+    database=client[database]
+    collection=database[collection]
+    response=collection.find({},projection)
+    rows = []
+
+    for row in response:
+        rows.append(row)
+    #response=response._id
+    client.close()
+    # print("aggregate result")
+    # print(rows)
+    return rows
+
+# query = [
+#     {
+#         "$match" : {
+#             "C/10001": { "$exists": True },
+#
+#         }
+#     }
+# ]
+# database='exhibitor_details'
+# collection='exhibitor_details'
+# fields={'_id','BDEvent_ID','brand_name', 'Timestamp'}
+# fetch_fields_from_db(fields,database,collection)
 
 def populate_db_query(database,stage_input_list):
     query = [
@@ -355,7 +392,6 @@ def dowelltargetedpopulation(database_type, S,number_of_variable, stage_input_li
 #        #dowellenventcreation()
 
 
-import pymongo
 
 def fetch_collections(database):
     myclient = pymongo.MongoClient("mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority")
@@ -411,4 +447,4 @@ stage_input_list = [
     }
  ]
 
-dowelltargetedpopulation(database, stages,1, stage_input_list)
+#dowelltargetedpopulation(database, stages,1, stage_input_list)

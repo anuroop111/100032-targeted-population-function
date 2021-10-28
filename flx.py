@@ -2,7 +2,9 @@ from flask import Flask, render_template, make_response, render_template_string
 from flask import request
 import pandas
 import json
-from targeted_population import dowelltargetedpopulation, fetch_collections, fetch_databases
+from bson import ObjectId
+
+from targeted_population import dowelltargetedpopulation, fetch_collections, fetch_databases, fetch_fields_from_db
 app = Flask(__name__)
 
 @app.route('/')
@@ -14,6 +16,22 @@ def mongodb():
     collections = []
     databases = fetch_databases()
     return render_template('index.html', collections=collections, databases=databases)
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
+@app.route('/api/fetch-fields-from-db', methods = ['POST',])
+def fetch_fields_from_db_json_response():
+    request_data = request.get_json()
+    database= request_data['database']
+    collection= request_data['collection']
+    fields= request_data['fields']
+    data = fetch_fields_from_db(fields,database,collection)
+    return JSONEncoder().encode(data)
 
 @app.route('/api/targeted_population/app',methods = ['POST',])
 def targeted_population_json_response():
