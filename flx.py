@@ -30,7 +30,9 @@ def fetch_fields_from_db_json_response():
     database= request_data['database']
     collection= request_data['collection']
     fields= request_data['fields']
-    data = fetch_fields_from_db(fields,database,collection)
+    start_point= request_data['start_point']
+    end_point= request_data['end_point']
+    data = fetch_fields_from_db(fields,database,collection, start_point, end_point)
     return JSONEncoder().encode(data)
 
 @app.route('/api/targeted_population/app',methods = ['POST',])

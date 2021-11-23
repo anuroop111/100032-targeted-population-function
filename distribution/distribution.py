@@ -1,8 +1,6 @@
 from samplingrule.samplingrule import dowellsamplingrule
 
 def dowelldistribution(x):
-    
-    
     split=getSplit()
     
     if x==0:

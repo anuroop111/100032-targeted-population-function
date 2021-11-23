@@ -14,7 +14,7 @@ from distribution.distribution import dowelldistribution
 HOST="mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority"
 
 
-def fetch_fields_from_db(fields,database,collection):
+def fetch_fields_from_db(fields,database,collection, start_point, end_point):
 
     projection = {'_id':0}
     for field in fields:
@@ -23,16 +23,33 @@ def fetch_fields_from_db(fields,database,collection):
     client =  pymongo.MongoClient(HOST)
     database=client[database]
     collection=database[collection]
-    response=collection.find({},projection)
+    response=collection.find({},{'BDEvent_ID':1})
     rows = []
 
     for row in response:
         rows.append(row)
-    #response=response._id
+    print(rows)
+    bd_event_ids = [row['BDEvent_ID'] for row in rows]
+
+    event_database=client['Bangalore']
+    event_collection=event_database['events']
+    #events_response = event_collection.find( { 'eventId': { '$in': bd_event_ids }, 'dowell_time':{'$lte':end_point, '$gte':start_point} } )
+
+    events_response = event_collection.find({'dowell_time':{'$lte':end_point, '$gte':start_point} } )
+    event_rows = []
+    for row in events_response:
+        event_rows.append(row['eventId'])
+
+    print(event_rows)
+
+    response=collection.find({'BDEvent_ID': { '$in': bd_event_ids }},projection)
+    rows = []
+
+    for row in response:
+        rows.append(row)
     client.close()
-    # print("aggregate result")
-    # print(rows)
-    return rows
+
+    return row
 
 # query = [
 #     {

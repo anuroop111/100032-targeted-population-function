@@ -17,13 +17,15 @@ def targeted_population(database_name, n_stage, number_of_variables, stage_input
     return response.text
 
 
-def fetch_fields_from_db(database_name, fields,collection, database):
-    url = 'http://127.0.0.1:5000/api/fetch-fields-from-db'
+def fetch_fields_from_db(database_name, fields,collection, database, start_point, end_point):
+    url = 'http://100032.pythonanywhere.com/api/fetch-fields-from-db'
     request_data={
         'fields':fields,
         'database_name':database_name,
         'collection':collection,
-        'database':database
+        'database':database,
+        'start_point':start_point,
+        'end_point':end_point,
     }
     headers = {'content-type': 'application/json'}
 
