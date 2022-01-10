@@ -4,14 +4,15 @@ import json
 import requests
 import pprint
 import pandas
-import datetime
 import random
 import pymongo
+from datetime import date, datetime
 
 from samplingrule.samplingrule import dowellsamplingrule
 from distribution.distribution import dowelldistribution
 
 HOST="mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority"
+
 
 
 def fetch_fields_from_db(fields,database,collection, start_point, end_point):
@@ -23,33 +24,38 @@ def fetch_fields_from_db(fields,database,collection, start_point, end_point):
     client =  pymongo.MongoClient(HOST)
     database=client[database]
     collection=database[collection]
-    response=collection.find({},{'BDEvent_ID':1})
+    response=collection.find({},{'event_id':1})
     rows = []
 
     for row in response:
         rows.append(row)
+    print("rows")
     print(rows)
-    bd_event_ids = [row['BDEvent_ID'] for row in rows]
+    bd_event_ids =[]
+    for row in rows:
+        if 'event_id' in row:
+            bd_event_ids.append(row['event_id'])
 
     event_database=client['Bangalore']
     event_collection=event_database['events']
-    #events_response = event_collection.find( { 'eventId': { '$in': bd_event_ids }, 'dowell_time':{'$lte':end_point, '$gte':start_point} } )
+    events_response = event_collection.find( { 'eventId': { '$in': bd_event_ids }, 'dowell_time':{'$gte':start_point,'$lte':end_point} } )
 
-    events_response = event_collection.find({'dowell_time':{'$lte':end_point, '$gte':start_point} } )
-    event_rows = []
+    #events_response = event_collection.find({'dowell_time':{'$lte':end_point, '$gte':start_point} } )
+    event_ids = []
     for row in events_response:
-        event_rows.append(row['eventId'])
+        event_ids.append(row['eventId'])
 
-    print(event_rows)
+    print(event_ids)
+    print("here")
 
-    response=collection.find({'BDEvent_ID': { '$in': bd_event_ids }},projection)
+    response=collection.find({'event_id': { '$in': event_ids }},projection)
     rows = []
 
     for row in response:
         rows.append(row)
     client.close()
 
-    return row
+    return rows
 
 # query = [
 #     {
@@ -92,8 +98,8 @@ def populate_db_query(database,stage_input_list):
            condition_greater = {"D/10004" : {"$gte" : float(stage['start_point'])}}
 
         elif stage['d']==5:
-            condition_less = {"Date" : {"$lte" :stage['end_point']}}
-            condition_greater = {"Date" : {"$gte" : stage['start_point']}}
+            condition_less = {"Date" : {"$lte" :datetime.strptime(stage['end_point'], '%Y/%m/%d')}}
+            condition_greater = {"Date" : {"$gte" : datetime.strptime(stage['start_point'], '%Y/%m/%d')}}
 #        elif stage['d']==6:
 #           condition_less = {"C/10001" : {"$lte" : stage['start_point']},
 #           condition_greater = {"C/10001" : {"$gte" : stage['end_point']},
@@ -110,37 +116,19 @@ def populate_db_query(database,stage_input_list):
 
 def call_dowellconnection_with_query(query, collection, database):
 
-    url = 'http://100002.pythonanywhere.com/'
-    data={
-      "cluster": "FB",
-      "database": "blr",
-      "collection": collection,
-      "document": "day001",
-      "team_member_ID": "12345432",
-      "function_ID": "ABCDE",
-      "command": "aggregate",
-      "field": {
-        "name":"Joy update",
+    client =  pymongo.MongoClient(HOST)
+    database=client[database]
+    collection=database[collection]
+    response=collection.aggregate(query)
+    rows = []
 
-          },
-      'update_field':{
-        "name": "Joy update",
-        "phone": "123456",
-        "age": "26",
-        "language": "Englis",
+    for row in response:
+        rows.append(row)
+    client.close()
+    print("aggregate result")
+    print(rows)
+    return rows
 
-       },
-      "platform": database,
-      "query":query
-    }
-    headers = {'content-type': 'application/json'}
-
-    response = requests.post(url, json =data,headers=headers)
-    data=response.text
-    # print('response')
-    # print(data)
-
-    return data
 
 def filter_lot_database(df,stage ):
     proportion_selection = stage['p_r_selection']
@@ -327,10 +315,10 @@ def dowelltargetedpopulation(database_type, S,number_of_variable, stage_input_li
 
     print("query---")
     print(query)
-    response_json = call_dowellconnection_with_query(query, collection, database)
-    print("response",response_json)
+    data = call_dowellconnection_with_query(query, collection, database)
+    print("response",data)
     #print("-----------------------start-----------------------------")
-    df = pandas.DataFrame(json.loads(response_json))
+    df = pandas.DataFrame(data)
     df = df.astype({'C/10001':'float64','B/10002':'float64','C/10003':'float64','D/10004':'float64'})
 
     #filter for all stages
