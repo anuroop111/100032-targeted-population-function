@@ -84,6 +84,22 @@
         </div>
 
         <div class="col">
+          <div class="mb-3">
+            <select name="period" class="form-select" aria-label="Period">
+                      <option value="custom">Custom</option>
+                      <option value="last_1_day">last 1 day</option>
+                      <option value="last_7_days">last 7 days</option>
+                      <option value="last_30_days">last 30 days</option>
+                      <option value="last_90_days">last 90 days</option>
+                      <option value="last_180_days">last 180 days</option>
+                      <option value="last_1_year">last 1 year</option>
+                      <option value="life_time">life time</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col">
           <input name="start_point" type="text" class="form-control" placeholder="2021/01/25" />
         </div>
 
@@ -93,26 +109,7 @@
 
         <div class="col">
           <input
-          name="a"        print("postdtata")
-        datatype_list = request.form.getlist('datatype')
-        max_or_agv_list=request.form.getlist('max_or_agv')
-        max_avg_val_list=request.form.getlist('max_avg_val')
-        error_percent_list=request.form.getlist('error_percent')
-        range_list=request.form.getlist('range')
-        start_point_list=request.form.getlist('start_point')
-        end_point_list=request.form.getlist('end_point')
-        a_list=request.form.getlist('a')
-        S = int(request.form.get('n_stage'))
-        print("errorrrrrrr",error_percent_list)
-
-        #stage_input_list=get_stage_List(S,datatype_list,max_or_agv_list,max_avg_val_list,error_percent_list,range_list,start_point_list,end_point_list,a_list)
-        #stage_input_list = list(stage_input_list)
-        targeted_population = dowelltargetedpopulation('mongodb', S,datatype_list,max_or_agv_list,max_avg_val_list,error_percent_list,range_list,start_point_list,end_point_list,a_list)
-        if isinstance(targeted_population, pandas.DataFrame):
-            df_html = targeted_population.to_html()
-            resp = make_response(render_template_string(df_html))
-            return resp
-        return targeted_populatio
+          name="a"
             type="number"
             class="form-control"
             placeholder="number of units (a)"
