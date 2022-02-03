@@ -3,8 +3,10 @@ from flask import request
 import pandas
 import json
 from bson import ObjectId
+from datetime import date, datetime
 
 from targeted_population import dowelltargetedpopulation, fetch_collections, fetch_databases, fetch_fields_from_db
+from targeted_population_poisson_distribution import dowelltargetedpopulation as poisson_distribution
 
 app = Flask(__name__)
 
@@ -25,6 +27,9 @@ class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
             return str(o)
+
+        if isinstance(o, (datetime, date)):
+            return o.isoformat()
         return json.JSONEncoder.default(self, o)
 
 
@@ -50,6 +55,12 @@ def targeted_population_json_response():
 
         number_of_variable = stages_form_data['number_of_variable']
         stage_input_list = stages_form_data['stages']
+
+        if stages_form_data['distribution_type'] == 'poisson':
+            results = poisson_distribution('mongodb', S, number_of_variable, stage_input_list,
+                                           collection=collection, database=database)
+            return {'isError': False, 'data': JSONEncoder().encode(results)}
+
         targeted_population, status = dowelltargetedpopulation('mongodb', S, number_of_variable, stage_input_list,
                                                                collection=collection, database=database)
 
@@ -103,7 +114,6 @@ def hello_name():
                 stage['end_point'] = stages_form_data['end_point'][i]
                 stage_input_list.append(stage)
                 continue
-
 
             stage['m_or_A_selction'] = stages_form_data['max_or_agv'][i]
             stage['m_or_A_value'] = float(stages_form_data['max_avg_val'][i])

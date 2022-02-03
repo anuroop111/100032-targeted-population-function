@@ -103,6 +103,7 @@ def populate_db_query(database, stage_input_list):
     and_array = []
     condition_less = {}
     condition_greater = {}
+
     for stage in stage_input_list:
         if stage['d'] == 1:
             condition_less = {"C/10001": {"$lte": float(stage['end_point'])}}
@@ -131,6 +132,9 @@ def populate_db_query(database, stage_input_list):
             condition_less = {"Date": {"$lte": end_point_point_date}}
             condition_greater = {"Date": {"$gte": start_point_date}}
 
+            result_start_date = start_point_date
+            result_end_date = end_point_point_date
+
         elif stage['d'] == 0:
             break
 
@@ -138,7 +142,7 @@ def populate_db_query(database, stage_input_list):
         and_array.append(condition_less)
     query[0]["$match"]['$and'] = and_array
 
-    return query
+    return query, result_start_date, result_end_date
 
 
 def call_dowellconnection_with_query(query, collection, database):
@@ -331,7 +335,7 @@ def dowelltargetedpopulation(database_type, S, number_of_variable, stage_input_l
     # stage_input_list[0]['d'] = 5
     # print(stage_input_list)
     # print('----------------------------------')
-    query = populate_db_query(database, stage_input_list)
+    query, result_start_date, result_end_date = populate_db_query(database, stage_input_list)
 
     print("query---")
     print(query)
@@ -441,11 +445,12 @@ def fetch_databases():
 
 
 database = 'spreadsheet'
-stages = 3
+stages = 1
 
 stage_input_list = [
     {
         'd': 5,
+        'period': 'custom',
         'm_or_A_selction': 'maximum_point',
         'm_or_A_value': 100,
         'error': 10,
@@ -464,16 +469,16 @@ stage_input_list = [
         'end_point': 700,
         'a': 2,
     },
-    {
-        'd': 2,
-        'm_or_A_selction': 'maximum_point',
-        'm_or_A_value': 700,
-        'error': 30,
-        'r': 100,
-        'start_point': 0,
-        'end_point': 1000,
-        'a': 1,
-    }
+    # {
+    #     'd': 2,
+    #     'm_or_A_selction': 'maximum_point',
+    #     'm_or_A_value': 700,
+    #     'error': 30,
+    #     'r': 100,
+    #     'start_point': 0,
+    #     'end_point': 1000,
+    #     'a': 1,
+    # }
 ]
 
-# dowelltargetedpopulation(database, stages,1, stage_input_list)
+# dowelltargetedpopulation(database, stages, 1, stage_input_list)

@@ -31,6 +31,7 @@ For more details understanding look onto the example below
 #import the targeted topulation function
 from targeted_population_api.targeted_population import targeted_population
 
+
 #name of details
 database_name='mongodb'
 database='Bangalore'
