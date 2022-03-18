@@ -10,7 +10,10 @@ from datetime import date, datetime, timedelta
 from samplingrule.samplingrule import dowellsamplingrule
 from distribution.distribution import dowelldistribution
 
-HOST = "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority"
+HOST = "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017," \
+       "cluster0-shard-00-01.n2ih9.mongodb.net:27017," \
+       "cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0" \
+       "&retryWrites=true&ssl=true&w=majority "
 
 
 def fetch_fields_from_db(fields, database, collection, start_point, end_point):
@@ -71,7 +74,6 @@ def fetch_fields_from_db(fields, database, collection, start_point, end_point):
 
 
 def get_date(period):
-
     print("period.........", period)
     today = datetime.now()
 
@@ -90,11 +92,11 @@ def get_date(period):
         return today - timedelta(days=365)
 
 
-def populate_db_query(database, stage_input_list):
+def populate_db_query(time_input, stage_input_list):
     query = [
         {
             "$match": {
-                "C/10001": {"$exists": True},
+                time_input['column_name']: {"$exists": True},
 
             }
         }
@@ -104,42 +106,43 @@ def populate_db_query(database, stage_input_list):
     condition_less = {}
     condition_greater = {}
 
-    for stage in stage_input_list:
-        if stage['d'] == 1:
-            condition_less = {"C/10001": {"$lte": float(stage['end_point'])}}
-            condition_greater = {"C/10001": {"$gte": float(stage['start_point'])}}
-        elif stage['d'] == 2:
-            condition_less = {"B/10002": {"$lte": float(stage['end_point'])}}
-            condition_greater = {"B/10002": {"$gte": float(stage['start_point'])}}
-        elif stage['d'] == 3:
-            condition_less = {"C/10003": {"$lte": float(stage['end_point'])}}
-            condition_greater = {"C/10003": {"$gte": float(stage['start_point'])}}
-        elif stage['d'] == 4:
-            condition_less = {"D/10004": {"$lte": float(stage['end_point'])}}
-            condition_greater = {"D/10004": {"$gte": float(stage['start_point'])}}
+    result_start_date = None
+    result_end_date = None
 
-        elif stage['d'] == 5:
-            if stage['period'] == 'custom':
-                start_point_date = datetime.strptime(stage['start_point'], '%Y/%m/%d')
-                end_point_point_date = datetime.strptime(stage['end_point'], '%Y/%m/%d')
-            elif stage['period'] == 'life_time':
-                and_array.append({'Date': {"$lte": datetime.now()}})
-                continue
-            else:
-                end_point_point_date = datetime.now()
-                start_point_date = get_date(stage['period'])
+    if time_input['period'] == 'custom':
+        start_point_date = datetime.strptime(time_input['start_point'], '%Y/%m/%d')
+        end_point_point_date = datetime.strptime(time_input['end_point'], '%Y/%m/%d')
 
-            condition_less = {"Date": {"$lte": end_point_point_date}}
-            condition_greater = {"Date": {"$gte": start_point_date}}
-
-            result_start_date = start_point_date
-            result_end_date = end_point_point_date
-
-        elif stage['d'] == 0:
-            break
+        condition_less = {time_input['column_name']: {"$lte": end_point_point_date}}
+        condition_greater = {time_input['column_name']: {"$gte": start_point_date}}
 
         and_array.append(condition_greater)
         and_array.append(condition_less)
+
+    elif time_input['period'] == 'life_time':
+        and_array.append({time_input['column_name']: {"$lte": datetime.now()}})
+    else:
+        end_point_point_date = datetime.now()
+        start_point_date = get_date(time_input['period'])
+
+        condition_less = {time_input['column_name']: {"$lte": end_point_point_date}}
+        condition_greater = {time_input['column_name']: {"$gte": start_point_date}}
+
+        and_array.append(condition_greater)
+        and_array.append(condition_less)
+
+    for stage in stage_input_list:
+        if stage['data_type'] == 0:
+            break
+        elif stage['data_type'] == 'lot':
+            continue
+
+        condition_less = {stage['data_type']: {"$lte": float(stage['end_point'])}}
+        condition_greater = {stage['data_type']: {"$gte": float(stage['start_point'])}}
+
+        and_array.append(condition_greater)
+        and_array.append(condition_less)
+
     query[0]["$match"]['$and'] = and_array
 
     return query, result_start_date, result_end_date
@@ -207,7 +210,7 @@ def filter_df_population_average(df, column_name, stage):
     for index, row in newpanda.iterrows():
         try:
             current_mean = sum_of_taken_numbers / taken_number_count
-        except:
+        except Exception:
             current_mean = 0
 
         if current_mean == population_average:
@@ -217,7 +220,7 @@ def filter_df_population_average(df, column_name, stage):
             newpanda.drop(newpanda.index[index:], inplace=True)
             break
 
-        if start < row[column_name] and row[column_name] < range_end:
+        if start < row[column_name] < range_end:
             if taken >= a:
                 newpanda.drop(index, inplace=True)
             else:
@@ -237,7 +240,7 @@ def filter_df_population_average(df, column_name, stage):
                 start = range_end
                 range_end = start + r
 
-                if start < row[column_name] and row[column_name] < range_end:
+                if start < row[column_name] < range_end:
                     expected_sum_of_taken_numnbers = sum_of_taken_numbers + row[column_name]
                     expected_taken_number_count = taken_number_count + 1
                     expected_mean = expected_sum_of_taken_numnbers / expected_taken_number_count
@@ -263,7 +266,7 @@ def filter_df_population_average(df, column_name, stage):
     # print("current_mean", current_mean)
     # print("------filtered: "+str(stage['d'])+"--------------")
 
-    if current_mean >= population_average_min and current_mean <= population_average_max:
+    if population_average_min <= current_mean <= population_average_max:
         return newpanda
     else:
         return pandas.DataFrame([])
@@ -294,7 +297,7 @@ def filter_df_max_point(df, column_name, stage):
             newpanda.drop(index, inplace=True)
             continue
 
-        if start < row[column_name] and row[column_name] < range_end:
+        if start < row[column_name] < range_end:
             if taken >= a:
                 newpanda.drop(index, inplace=True)
             else:
@@ -308,7 +311,7 @@ def filter_df_max_point(df, column_name, stage):
                 taken = 0
                 start = range_end
                 range_end = start + r
-                if start < row[column_name] and row[column_name] < range_end:
+                if start < row[column_name] < range_end:
                     if summation + row[column_name] < max_sum_max:
                         taken = taken + 1
                         summation = summation + row[column_name]
@@ -323,88 +326,68 @@ def filter_df_max_point(df, column_name, stage):
     # print(newpanda)
     # print("------filtered: "+str(stage['d'])+"--------------")
 
-    if summation >= max_sum_min and summation <= max_sum_max:
+    if max_sum_min <= summation <= max_sum_max:
         return newpanda
     else:
         return pandas.DataFrame([])
 
 
-def dowelltargetedpopulation(database_type, S, number_of_variable, stage_input_list, collection="day001",
+def dowelltargetedpopulation(database_type, time_input, number_of_variable, stage_input_list, collection="day001",
                              database="Banglore"):
+    """
+
+    :param database_type:
+    :param time_input:
+    :param number_of_variable:
+    :param stage_input_list:
+    :param collection:
+    :param database:
+    :return:
+    """
     # Define number of stages as variable "S"
     # stage_input_list[0]['d'] = 5
     # print(stage_input_list)
     # print('----------------------------------')
-    query, result_start_date, result_end_date = populate_db_query(database, stage_input_list)
+    query, result_start_date, result_end_date = populate_db_query(time_input, stage_input_list)
 
     print("query---")
     print(query)
     data = call_dowellconnection_with_query(query, collection, database)
     print("response", data)
     if not data:
-        return "not any data within that date range", "Not Success"
+        return True, ["not any data within that date range and conditions"], "Not Success"
     # print("-----------------------start-----------------------------")
-    df = pandas.DataFrame(data)
-    df = df.astype({'C/10001': 'float64', 'B/10002': 'float64', 'C/10003': 'float64', 'D/10004': 'float64'})
 
-    # filter for all stages
-    for stage in stage_input_list:
+    if stage_input_list:
 
-        d = stage['d']
-        print("here is population_average", d)
+        df = pandas.DataFrame(data)
+        df = df.astype({'C/10001': 'float64', 'B/10002': 'float64', 'C/10003': 'float64', 'D/10004': 'float64'})
 
-        if d == 0:
-            break
-        elif d == 1:
+        # filter for all stages
+        for stage in stage_input_list:
+            d = stage['data_type']
+            if d == 'lot':
+                df = filter_lot_database(df, stage)
+                if df.empty:
+                    return True, ['selection is not matching the required lot size'], "Not Success",
+                continue
+            if d == 0:
+                break
 
             if stage['m_or_A_selction'] == 'population_average':
-
-                df = filter_df_population_average(df, 'C/10001', stage)
+                df = filter_df_population_average(df, d, stage)
             else:
-                df = filter_df_max_point(df, 'C/10001', stage)
+                df = filter_df_max_point(df, d, stage)
             if df.empty:
-                print("not matched for ", d)
-                return "not matched for datatype " + str(d), "Not Success"
-        elif d == 2:
-            if stage['m_or_A_selction'] == 'population_average':
-                df = filter_df_population_average(df, 'B/10002', stage)
-            else:
-                df = filter_df_max_point(df, 'B/10002', stage)
-            if df.empty:
-                print("not matched for ", d)
-                return "not matched for datatype " + str(d), "Not Success"
-        elif d == 3:
-            if stage['m_or_A_selction'] == 'population_average':
-                df = filter_df_population_average(df, 'C/10003', stage)
-            else:
-                df = filter_df_max_point(df, 'C/10003', stage)
-            if df.empty:
-                print("not matched for ", d)
-                return "not matched for datatype " + str(d), "Not Success"
-        elif d == 4:
-            if stage['m_or_A_selction'] == 'population_average':
-                df = filter_df_population_average(df, 'D/10004', stage)
-            else:
-                df = filter_df_max_point(df, 'D/10004', stage)
-            if df.empty:
-                print("not matched for ", d)
-                return "not matched for datatype " + str(d), "Not Success"
-        elif d == 5:
-            continue
-        elif d == 6:
-            continue
-        elif d == 7:
+                return True, ["not matched for datatype " + str(d)], "Not Success"
 
-            df = filter_lot_database(df, stage)
-            if df.empty:
-                return "selection is not matching the required lot size", "Not Success"
-            continue
+        n = len(df.index)
+        is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
 
-    # dowellsamplingrule(size of data, number of category)
-    n = len(df.index)
-    is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
-
-    return df, status
+        return False, df.to_dict('dict'), status
+    else:
+        is_acceptable, sample_size, status = dowellsamplingrule(len(data), 1, number_of_variable)
+        return False, data, status
 
 
 #    if database == 'spreadsheet':
@@ -425,7 +408,10 @@ def dowelltargetedpopulation(database_type, S, number_of_variable, stage_input_l
 
 def fetch_collections(database):
     myclient = pymongo.MongoClient(
-        "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority")
+        "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,"
+        "cluster0-shard-00-01.n2ih9.mongodb.net:27017,"
+        "cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0"
+        "&retryWrites=true&ssl=true&w=majority")
 
     mydb = myclient[database]
 
@@ -447,7 +433,7 @@ def fetch_databases():
 database = 'spreadsheet'
 stages = 1
 
-stage_input_list = [
+stage_inputs = [
     {
         'd': 5,
         'period': 'custom',

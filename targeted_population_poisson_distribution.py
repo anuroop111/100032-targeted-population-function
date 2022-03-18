@@ -3,10 +3,13 @@ import pandas
 from datetime import date, datetime, timedelta
 from targeted_population import populate_db_query, call_dowellconnection_with_query
 
-HOST = "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017,cluster0-shard-00-01.n2ih9.mongodb.net:27017,cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0&retryWrites=true&ssl=true&w=majority"
+HOST = "mongodb://user1:Test12345@cluster0-shard-00-00.n2ih9.mongodb.net:27017," \
+       "cluster0-shard-00-01.n2ih9.mongodb.net:27017," \
+       "cluster0-shard-00-02.n2ih9.mongodb.net:27017/Banglore?authSource=admin&replicaSet=atlas-heuz5b-shard-0" \
+       "&retryWrites=true&ssl=true&w=majority "
 
 
-def dowelltargetedpopulation(database_type, n_stage, number_of_variable, stage_input_list, collection="day001",
+def dowelltargetedpopulation(database_type,number_of_variable, stage_input_list, collection="day001",
                              database="Bangalore"):
     date_stage_only_list = stage_input_list[:1]
     query, result_start_date, result_end_date = populate_db_query(database, date_stage_only_list)
@@ -112,10 +115,10 @@ stage_input_list = [
     },
 ]
 
-result = dowelltargetedpopulation(database_type, n_stage, number_of_variable, stage_input_list, "day001", "Bangalore")
-
-for r in result:
-    print('result set --------------')
-    print(r)
-
-print('result size: ', len(result))
+# result = dowelltargetedpopulation(database_type, n_stage, number_of_variable, stage_input_list, "day001", "Bangalore")
+#
+# for r in result:
+#     print('result set --------------')
+#     print(r)
+#
+# print('result size: ', len(result))
