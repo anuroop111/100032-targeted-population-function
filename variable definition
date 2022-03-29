@@ -1,0 +1,38 @@
+INPUT VARIABLES: 
+
+   database 	: type of database like mongodb,mysql,etc
+   Database name: Name of the database like Stattricks 
+   Collection name : Name of the Collection in selected database name	
+   Field name of the event ID/Primary field :Name of the field of event ID based on which event IDs to be fetched(from event function)
+   type of event : what kind of data is there like learning,testing,etc(from event function)
+   distribution : type of distribution to be selected based on which data to be fetched.
+           i) Normal distribution = 1,  if selected 
+                                    0,  if not selected
+           ii) Poisson distribution = 1,  if selected 
+                                    0,  if not selected   
+           iii) Binomial distribution = 1,  if selected 
+                                     0,  if not selected
+           iv) Bernoulli distribution = 1,  if selected 
+                                    0,  if not selected
+   Targeted field name: name of the targeted field like Age, Income,etc
+   type(d): type of data like area,volume,length,time,quantity,random lot
+   period	: time period for which data to be fetched like last one day, last one hour, lifetime,custom,etc
+   start point : if custom period is selected, from where to start.
+   end point:  if custom period is selected, till where to continue.
+   maximum point: it is the value which is maximum for sum of data 
+   Pop Avg : data to be fetched in such a way it should be unbiased estimate of pop avg
+   range: if the selected data to be divided in some ranges for additional reqirement
+   number of units: no of units to be selected in the range defined above
+   first position:for random lot, from where to start the selection
+   last position : for random lot, till where to fetch
+   proportion: what proportion of data to be selected randomly
+   lot size:size of random lot
+   error: alowable error in %
+   splits : based on which data is splited based on distributions
+   
+   OUTPUT VARIABLE :
+   required data : the required data as per the distribution ,period and primary field.
+   adequacy status :whether the data obtained is adequate or not as per sampling rules.
+   event ID: returned from event function and fetched event Ids too along with data
+   Process time: time taken to get the output
+   size : size of the final output
