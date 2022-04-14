@@ -6,7 +6,7 @@ import pandas
 import random
 import pymongo
 from datetime import date, datetime, timedelta
-
+import time
 from samplingrule.samplingrule import dowellsamplingrule
 from distribution.distribution import dowelldistribution
 
@@ -59,18 +59,51 @@ def fetch_fields_from_db(fields, database, collection, start_point, end_point):
     return rows
 
 
-# query = [
-#     {
-#         "$match" : {
-#             "C/10001": { "$exists": True },
-#
-#         }
-#     }
-# ]
-# database='exhibitor_details'
-# collection='exhibitor_details'
-# fields={'_id','BDEvent_ID','brand_name', 'Timestamp'}
-# fetch_fields_from_db(fields,database,collection)
+DOWELL_TIME_EPOCH = 1609459200
+
+
+def dowell_time_now():
+    current_time = time.time()
+    dowell_time = current_time - DOWELL_TIME_EPOCH
+    return int(dowell_time)
+
+
+def dowell_time(a_date_time):
+    dtime_stamp = a_date_time.timestamp()
+    current_time = int(round(dtime_stamp))
+    dowell_time = current_time - DOWELL_TIME_EPOCH
+    return dowell_time
+
+
+def fetch_event_ids_from_db(time_input):
+    if time_input['period'] == 'custom':
+        start_point_date = datetime.strptime(time_input['start_point'], '%Y/%m/%d')
+        end_point_point_date = datetime.strptime(time_input['end_point'], '%Y/%m/%d')
+
+        start_dowell_time = dowell_time(start_point_date)
+        end_dowell_time = dowell_time(end_point_point_date)
+
+    elif time_input['period'] == 'life_time':
+        start_dowell_time = 0
+        end_dowell_time = dowell_time_now()
+    else:
+        start_point_date = get_date(time_input['period'])
+        start_dowell_time = dowell_time(start_point_date)
+        end_dowell_time = datetime.now()
+
+    condition = {'dowell_time': {'$gte': start_dowell_time, '$lte': end_dowell_time}}
+
+    client = pymongo.MongoClient(HOST)
+
+    event_database = client['Bangalore']
+    event_collection = event_database['events']
+    events_response = event_collection.find(condition)
+
+    event_ids = []
+    for row in events_response:
+        event_ids.append(row['eventId'])
+
+    return event_ids
 
 
 def get_date(period):
@@ -93,11 +126,15 @@ def get_date(period):
 
 
 def populate_db_query(time_input, stage_input_list):
+    event_ids = fetch_event_ids_from_db(time_input)
+
+    print("events ids", event_ids)
+
     query = [
         {
             "$match": {
                 time_input['column_name']: {"$exists": True},
-
+                'eventId': {'$in': event_ids},
             }
         }
     ]
@@ -105,31 +142,6 @@ def populate_db_query(time_input, stage_input_list):
     and_array = []
     condition_less = {}
     condition_greater = {}
-
-    result_start_date = None
-    result_end_date = None
-
-    if time_input['period'] == 'custom':
-        start_point_date = datetime.strptime(time_input['start_point'], '%Y/%m/%d')
-        end_point_point_date = datetime.strptime(time_input['end_point'], '%Y/%m/%d')
-
-        condition_less = {time_input['column_name']: {"$lte": end_point_point_date}}
-        condition_greater = {time_input['column_name']: {"$gte": start_point_date}}
-
-        and_array.append(condition_greater)
-        and_array.append(condition_less)
-
-    elif time_input['period'] == 'life_time':
-        and_array.append({time_input['column_name']: {"$lte": datetime.now()}})
-    else:
-        end_point_point_date = datetime.now()
-        start_point_date = get_date(time_input['period'])
-
-        condition_less = {time_input['column_name']: {"$lte": end_point_point_date}}
-        condition_greater = {time_input['column_name']: {"$gte": start_point_date}}
-
-        and_array.append(condition_greater)
-        and_array.append(condition_less)
 
     for stage in stage_input_list:
         if stage['data_type'] == 0:
@@ -143,9 +155,10 @@ def populate_db_query(time_input, stage_input_list):
         and_array.append(condition_greater)
         and_array.append(condition_less)
 
-    query[0]["$match"]['$and'] = and_array
+    if and_array:
+        query[0]["$match"]['$and'] = and_array
 
-    return query, result_start_date, result_end_date
+    return query, None, None
 
 
 def call_dowellconnection_with_query(query, collection, database):

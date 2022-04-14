@@ -55,16 +55,33 @@ def targeted_population_json_response():
         stage_input_list = request_data['stages']
         time_input = request_data['time_input']
 
-        # if request_data['distribution_type'] == 'poisson': results = poisson_distribution(database_type='mongodb',
-        # time_input=time_input, number_of_variable=number_of_variable, stage_input_list=stage_input_list,
-        # collection=collection, database=database) return {'isError': False, 'data': JSONEncoder().encode(results)}
+        distribution_input = request_data['distribution_input']
 
-        is_error, targeted_population, status = dowelltargetedpopulation(database_type='mongodb', time_input=time_input,
-                                                                         number_of_variable=number_of_variable,
-                                                                         stage_input_list=stage_input_list,
-                                                                         collection=collection, database=database)
+        response = {}
 
-        return {'isError': is_error, 'data': JSONEncoder().encode(targeted_population), 'sampling_status': status}
+        if distribution_input['poisson'] == 1:
+            response['poisson'] = {'isError': True,  'error': "not implemented yet"}
+
+        #     results = poisson_distribution(database_type='mongodb',
+        # # time_input=time_input, number_of_variable=number_of_variable, stage_input_list=stage_input_list,
+        # # collection=collection, database=database) return {'isError': False, 'data': JSONEncoder().encode(results)}
+        #
+        if distribution_input['normal'] == 1:
+            is_error, targeted_population, status = dowelltargetedpopulation(database_type='mongodb',
+                                                                             time_input=time_input,
+                                                                             number_of_variable=number_of_variable,
+                                                                             stage_input_list=stage_input_list,
+                                                                             collection=collection, database=database)
+
+            response['normal'] = {'isError': is_error, 'data': JSONEncoder().encode(targeted_population), 'sampling_status': status}
+
+        if distribution_input['bernoulli'] == 1:
+            response['bernoulli'] = {'isError': True, 'error': "not implemented yet"}
+
+        if distribution_input['binomial'] == 1:
+            response['binomial'] = {'isError': True, 'error': "not implemented yet"}
+
+        return response
 
 
 if __name__ == '__main__':
