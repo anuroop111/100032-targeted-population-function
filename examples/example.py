@@ -1,7 +1,8 @@
 import json
 import requests
 
-url = 'http://127.0.0.1:5000/api/targeted_population/'
+#url = 'http://127.0.0.1:5000/api/targeted_population/'
+url = 'http://100032.pythonanywhere.com/api/targeted_population/'
 
 # database name
 database_name = 'mongodb'
@@ -25,7 +26,7 @@ number_of_variables = 1
 
 time_input = {
     'column_name': 'Date',
-    'period': 'last_30_days',
+    'period': 'life_time',
     'start_point': '2021/01/08',
     'end_point': '2021/01/25',
 }

@@ -357,19 +357,12 @@ def dowelltargetedpopulation(database_type, time_input, number_of_variable, stag
     :param database:
     :return:
     """
-    # Define number of stages as variable "S"
-    # stage_input_list[0]['d'] = 5
-    # print(stage_input_list)
-    # print('----------------------------------')
     query, result_start_date, result_end_date = populate_db_query(time_input, stage_input_list)
-
-    print("query---")
-    print(query)
     data = call_dowellconnection_with_query(query, collection, database)
-    print("response", data)
+
+
     if not data:
         return True, ["not any data within that date range and conditions"], "Not Success"
-    # print("-----------------------start-----------------------------")
 
     if stage_input_list:
 
