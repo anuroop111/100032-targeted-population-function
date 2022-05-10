@@ -1,26 +1,13 @@
-from flask import Flask, render_template, make_response, render_template_string
+from flask import Flask
 from flask import request
-import pandas
 import json
 from bson import ObjectId
 from datetime import date, datetime
 
-from targeted_population import dowelltargetedpopulation, fetch_collections, fetch_databases, fetch_fields_from_db
-from targeted_population_poisson_distribution import dowelltargetedpopulation as poisson_distribution
+from get_data_tools import fetch_fields_from_db
+from targeted_population import targeted_population
 
 app = Flask(__name__)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/mongodb')
-def mongodb():
-    collections = []
-    databases = fetch_databases()
-    return render_template('index.html', collections=collections, databases=databases)
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -49,39 +36,17 @@ def fetch_fields_from_db_json_response():
 def targeted_population_json_response():
     if request.method == 'POST':
         request_data = request.get_json()
-        database = request_data['database']
-        collection = request_data['collection']
+        database_details = request_data['database_details']
         number_of_variable = request_data['number_of_variable']
         stage_input_list = request_data['stages']
         time_input = request_data['time_input']
 
         distribution_input = request_data['distribution_input']
 
-        response = {}
+        result = targeted_population(distribution_input, database_details, time_input, number_of_variable,
+                                     stage_input_list)
 
-        if distribution_input['poisson'] == 1:
-            response['poisson'] = {'isError': True,  'error': "not implemented yet"}
-
-        #     results = poisson_distribution(database_type='mongodb',
-        # # time_input=time_input, number_of_variable=number_of_variable, stage_input_list=stage_input_list,
-        # # collection=collection, database=database) return {'isError': False, 'data': JSONEncoder().encode(results)}
-        #
-        if distribution_input['normal'] == 1:
-            is_error, targeted_population, status = dowelltargetedpopulation(database_type='mongodb',
-                                                                             time_input=time_input,
-                                                                             number_of_variable=number_of_variable,
-                                                                             stage_input_list=stage_input_list,
-                                                                             collection=collection, database=database)
-
-            response['normal'] = {'isError': is_error, 'data': JSONEncoder().encode(targeted_population), 'sampling_status': status}
-
-        if distribution_input['bernoulli'] == 1:
-            response['bernoulli'] = {'isError': True, 'error': "not implemented yet"}
-
-        if distribution_input['binomial'] == 1:
-            response['binomial'] = {'isError': True, 'error': "not implemented yet"}
-
-        return response
+        return JSONEncoder().encode(result)
 
 
 if __name__ == '__main__':

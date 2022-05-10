@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 distribution/__pycache__/
+samplingrule/__pycache__/
 *.pyc
 # C extensions
 *.so
