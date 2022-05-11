@@ -1,6 +1,7 @@
 from get_data_tools import get_data_for_distribution
 from normal_distribution import normal_distribution
 from poisson_distribution import poisson_distribution
+from binomial_distribution import binomial_distribution
 
 
 def targeted_population(distribution_input, database_details, time_input, number_of_variable, stage_input_list):
@@ -16,9 +17,12 @@ def targeted_population(distribution_input, database_details, time_input, number
                                                                stage_input_list, number_of_variable)
 
     if distribution_input['binomial'] == 1:
-        distribution_results['binomial'] = "work in progress"
+        split_variable = 5
+        split_choice = "simple"
+        distribution_results['binomial'] = binomial_distribution(data, split_variable, split_choice)
 
     if distribution_input['bernoulli'] == 1:
+
         distribution_results['bernoulli'] = "work in progress"
 
     return distribution_results

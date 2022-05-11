@@ -7,8 +7,8 @@ url = 'http://127.0.0.1:5000/api/targeted_population/'
 
 database_details = {
     'database_name': 'mongodb',
-    'collection': 'licenses',
-    'database': 'license',
+    'collection': 'day001',
+    'database': 'Bangalore',
 }
 
 
@@ -34,15 +34,13 @@ time_input = {
 }
 
 stage_input_list = [
-
-
 ]
 
 # distribution input
 distribution_input={
     'normal': 1,
     'poisson':0,
-    'binomial':1,
+    'binomial':0,
     'bernoulli':1
     
 }

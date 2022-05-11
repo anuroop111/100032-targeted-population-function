@@ -1,12 +1,13 @@
 # call eventfunctionreport()
-test_data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
-             210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340]
-split_variable = int(input("Input number of variables to split into: "))
+# test_data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
+#              210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340]
 
-split_choice = ""
+# split_variable = int(input("Input number of variables to split into: "))
+#
+# split_choice = ""
 
 
-def binomial(test_sample, N, split_choice):
+def binomial_distribution(test_sample, N, split_choice):
     def condition(list_a, term, cond):  # Function for  success or failure condition
         for i in range(len(list_a)):
             for j in range(len(list_a[i])):
@@ -78,4 +79,4 @@ def binomial(test_sample, N, split_choice):
             choice(User_choice=split_decision, SIZE=size)
 
 
-binomial(test_sample=test_data, N=split_variable, split_choice=split_choice)
+# binomial_distribution(test_sample=test_data, N=split_variable, split_choice=split_choice)
