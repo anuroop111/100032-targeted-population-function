@@ -1,204 +1,88 @@
-#call eventfunctionreport()
+
+
+#Split function
+def make_splits(data_input, SIZE): 
+        for i in range(0, len(data_input), SIZE):
+            yield data_input[i:i + SIZE] 
+
+#Success function
+def condition(list_a, cond):
+    success = []
+    successful_data =[]
+    if cond:
+        for k in list_a:
+            count = sum(cond(elem) for elem in k)
+            success.append(str(count) + " Successes")    
+    else:
+        count = len(k)
+    return success
+
+#User input for success
+def success_condition_logic (data, user_choice, function):
+    if function == "<":
+        return (condition(list_a=data, cond=lambda x : x <= user_choice))
+    elif function == ">":
+        return condition(list_a=data, cond=lambda x : x >= user_choice)
+    elif function == "=":
+        return condition(list_a=data, cond=lambda x : x == user_choice)
+          
+
+def split_decision_function(splitted_data, size, split_decision, error, user_choice, function):
+    if len(splitted_data) == size:
+       pass
+    
+    else:
+        for i in range (len(splitted_data)):
+            if len(splitted_data[i]) != size:
+                incomplete = splitted_data[i]
+                if split_decision == "Eliminate":
+                    splitted_data.remove(incomplete)
+                    s = success_condition_logic(splitted_data, user_choice = user_choice, function=function)
+                    return [data, splitted_data, s, function, user_choice]
+                elif split_decision == "Check Accuracy":
+                    error = float(error)      
+                    if len(incomplete) >= ( size - (error*size)) and len(incomplete) <= (size + (error*size)):
+                        s = success_condition_logic(splitted_data, user_choice = user_choice, function=function)
+                        return [data, splitted_data, s, function, user_choice]
+                    else:
+                        split_decision == "Eliminate" 
+                        splitted_data.remove(incomplete)
+                        s = success_condition_logic(splitted_data, user_choice = user_choice, function=function)
+                        return [data, splitted_data, s, function, user_choice]
+def binomial_distribution(data, number_of_variables, split_choice, error, split_decision, user_choice, function, marginal_error):                            
+    if split_choice == "simple":
+        splitted_data = list(make_splits(data, number_of_variables))
+        if split_decision == "Eliminate":
+           success = split_decision_function(splitted_data=splitted_data, size=number_of_variables, split_decision=split_decision, error=0, user_choice=user_choice, function=function)
+           return success
+        elif split_decision == "Check Accuracy":
+            success = split_decision_function(splitted_data=splitted_data, size=number_of_variables, split_decision=split_decision, error=error, user_choice=user_choice, function=function)
+            return success
+        else:
+            split_decision_function(splitted_data=splitted_data, size=number_of_variables, split_decision=split_decision, error=0)
+    elif split_choice == "calculated":
+        data_length = len(data)
+        #print(data_length)
+        marginal_error = float(marginal_error)
+        n = (data_length / (1 +(data_length*(marginal_error**2)))) #slovens formula
+        calculated_number_of_variables = round(n)
+        #print(calculated_number_of_variables)
+        splitted_data = list(make_splits(data, calculated_number_of_variables))
+        if len(splitted_data[-1]) == len(splitted_data[0]):
+            success_count = success_condition_logic (data=splitted_data, user_choice=user_choice, function=function)
+            return [data, splitted_data,function, user_choice, success_count]
+        else:
+            if split_decision == "Eliminate":
+                return split_decision_function(splitted_data=splitted_data, size=calculated_number_of_variables, split_decision=split_decision, error=error, user_choice=user_choice,function=function)
+            elif split_decision == "Check Accuracy":
+                return split_decision_function(splitted_data=splitted_data, size=calculated_number_of_variables, split_decision=split_decision, error=error,user_choice=user_choice,function=function)
+    
+    
+    else:
+        splitted_data = list(make_splits(data, number_of_variables))
+        success_count = success_condition_logic (data=splitted_data, user_choice=user_choice, function=function)
+        return [data, splitted_data,function, user_choice, success_count]
+
 import random
-test_data = random.sample(range(0,10000), 100)
-split_variable = int(input("Input number of variables to split into: "))
-
-split_choice = ""
-def binomial(test_sample, N, split_choice):  
-           # Function for  success or failure condition
-            def condition(list_a, cond):
-                            if cond:
-                                for k in list_a:
-                                    count = sum(cond(elem) for elem in k)
-                                    print(str(count)+ " successes")
-                            else:
-                                count = len(k)
-                            return count                   
-           
-           #Function splitting my data 
-            def make_splits(data, SIZE): 
-                    for i in range(0, len(data), SIZE):
-                        yield data[i:i + SIZE] 
-           
-           #function for user_choice after choosing to split
-            def choice(User_choice, SIZE):  
-                    for i in range(len(z)):
-                        if len(z[i]) != SIZE:
-                            incomplete = (z[i])                        
-                            if User_choice == "Eliminate":
-                                new_list = z.remove(incomplete)
-                                print(z) 
-                                print(str(len(z)) + " splits made from elimination")
-                                display = input("Pick a choice for operation <, > or =: ")
-                                if display == "<":
-                                    user_choice_num = int(input("Pick < than: "))
-                                    condition(z, cond= lambda x: x <=user_choice_num)
-                                    for i in range(len(z)):
-                                        for j in range(len(z[i])):
-                                            a = z[i][j]
-                                            if a <= user_choice_num:
-                                                print(str(a) + ' is a success')
-                                            else:
-                                                print(str(a) + ' is a failure')
-                                elif display == ">":
-                                    user_choice_num = int(input("Pick > than: "))
-                                    condition(z, cond= lambda x: x >=user_choice_num)
-                                    for i in range(len(z)):
-                                        for j in range(len(z[i])):
-                                            a = z[i][j]
-                                            if a >= user_choice_num:
-                                                print(str(a) + ' is a success')
-                                            else:
-                                                print(str(a) + ' is a failure')
-                                elif display == "=":
-                                    user_choice_num = int(input("Pick = to: "))
-                                    condition(z, cond= lambda x: x ==user_choice_num)
-                                    for i in range(len(z)):
-                                        for j in range(len(z[i])):
-                                            a = z[i][j]
-                                            if a == user_choice_num:
-                                                print(str(a) + ' is a success')
-                                            else:
-                                                print(str(a) + ' is a failure')
-                                
-                                
-                                
-                            elif User_choice == "Check Accuracy":
-                                E = (float(input("Allowable Error in percentage: "))/100)
-                                if len(z[i]) >= (SIZE - (E*SIZE)) and len(z[i]) <= (SIZE + (E*SIZE)):
-                                    print(z)
-                                    print(str(len(z)) + " splits made by checking accuracy")
-                                    
-                                    display = input("Pick a choice for operation <, > or =: ")
-                                    if display == "<":
-                                        user_choice_num = int(input("Pick < than: "))
-                                        condition(z, cond= lambda x: x <=user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a <= user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                                    elif display == ">":
-                                        user_choice_num = int(input("Pick > than: "))
-                                        condition(z, cond= lambda x: x >=user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a >= user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                                    elif display == "=":
-                                        user_choice_num = int(input("Pick = to: "))
-                                        condition(z, cond= lambda x: x ==user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a == user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                                else:
-                                    User_choice == "Eliminate"
-                                    new_list = z.remove(incomplete)
-                                    print(z) 
-                                    print(str(len(z)) + " splits made from elimination")
-                                    display = input("Pick a choice for operation <, > or =: ")
-                                    if display == "<":
-                                        user_choice_num = int(input("Pick < than: "))
-                                        condition(z, cond= lambda x: x <=user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a <= user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                                    elif display == ">":
-                                        user_choice_num = int(input("Pick > than: "))
-                                        condition(z, cond= lambda x: x >=user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a >= user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                                    elif display == "=":
-                                        user_choice_num = int(input("Pick = to: "))
-                                        condition(z, cond= lambda x: x ==user_choice_num)
-                                        for i in range(len(z)):
-                                            for j in range(len(z[i])):
-                                                a = z[i][j]
-                                                if a == user_choice_num:
-                                                    print(str(a) + ' is a success')
-                                                else:
-                                                    print(str(a) + ' is a failure')
-                   
-                    
-            
-                    
-            splitted_data = make_splits(test_sample, N)
-            precise_split = list(splitted_data)
-            
-            if len(precise_split[0]) == len(precise_split[-1]):
-                print(precise_split)
-                print(str(len(precise_split)) + " splits made")
-                display = input("Pick a choice for operation <, > or =: ")
-                if display == "<":
-                    user_choice_num = int(input("Pick < than: "))
-                    condition(precise_split, cond= lambda x: x <=user_choice_num)
-                    for i in range(len(precise_split)):
-                        for j in range(len(precise_split[i])):
-                            a = precise_split[i][j]
-                            if a <= user_choice_num:
-                                print(str(a) + ' is a success')
-                            else:
-                                print(str(a) + ' is a failure')
-                elif display == ">":
-                    user_choice_num = int(input("Pick > than: "))
-                    condition(precise_split, cond= lambda x: x >=user_choice_num)
-                    for i in range(len(precise_split)):
-                        for j in range(len(precise_split[i])):
-                            a = precise_split[i][j]
-                            if a >= user_choice_num:
-                                print(str(a) + ' is a success')
-                            else:
-                                print(str(a) + ' is a failure')
-                elif display == "=":
-                    user_choice_num = int(input("Pick = to: "))
-                    condition(precise_split, cond= lambda x: x ==user_choice_num)
-                    for i in range(len(precise_split)):
-                        for j in range(len(precise_split[i])):
-                            a = precise_split[i][j]
-                            if a == user_choice_num:
-                                print(str(a) + ' is a success')
-                            else:
-                                print(str(a) + ' is a failure')
-            
-            else:
-                split_choice = input("calculated or simple split: ")
-                if split_choice == "simple": 
-                    size = N 
-                    y = make_splits(test_sample, size)
-                    split_decision = input("Eliminate or Check Accuracy: ")
-                    z = list(y)
-                    print(z)
-                    print(str(len(z)) + " splits made")
-                    choice(User_choice=split_decision, SIZE=N )       
-            
-                elif split_choice == "calculated":
-                    y = len(test_sample)
-                    e = float(input("input marginal error: " ))
-                    n = y / (1 + (y*(e**2)))  #slovens formula for calculating n
-                    size = round(n)
-                    y = make_splits(test_sample, size)
-                    z = list(y)
-                    print(z)
-                    split_decision = input("Eliminate or Check Accuracy: ")
-                    choice(User_choice=split_decision, SIZE=size )
-            
-
-binomial(test_sample=test_data, N = split_variable, split_choice= split_choice)
+data = random.sample(range(0,10000),20)
+print(binomial_distribution(data=data, number_of_variables = 0, split_choice = "calculated", error=0.5, split_decision="Check Accuracy",marginal_error=0.6, user_choice=4000, function="<"))
