@@ -50,7 +50,7 @@ response = requests.post(url, json=request_data,headers=headers)
 
 print(response.text)
 ```
-###What are the API request data means
+### What are the API request data means
 Use when developing in local machines
 ```shell
 url = 'http://127.0.0.1:5000/api/targeted_population/'
@@ -75,8 +75,8 @@ time_input = {
 }
 
 ```
-For time input
-period can be 'custom' or 'last_1_day' or 'last_30_days' or 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time'
+#### For time input
+Period can be 'custom' or 'last_1_day' or 'last_30_days' or 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time'
 if custom is given then need to specify start_point and end_point
 
 ```python
@@ -84,8 +84,8 @@ stage_input_list = [
 
 ]
 ```
-####statge_input_list is a list of stages
-####For  Norml distribution a stage can have
+#### statge_input_list is a list of stages
+#### For  Norml distribution a stage can have
 ```python
     {
         'd': 1,
@@ -119,7 +119,7 @@ distribution_input={
 Give 1 if expecting the output for the respective distribution
 Give 0 if not expecting output for that distribution
 
-##Output of the api
+## Output of the api
 ```python
 {"normal": {"is_error": false, "data": [{"_id": "61432d8cb65e9b5c90a52aba", "Date": "2021-01-15T18:30:00", "C/10001": 142, "B/10002": 417, "C/10003": 576, "D/10004": 510, "Event Array": "[11,10blr000160505661e0b9b354e134006e]", "Process_id": 1234, "eventId": "FB1010000000016413653685818675"}, {"_id": "61432d8cb65e9b5c90a52ab5", "Date": "2021-01-10T18:30:00", "C/10001": 105, "B/10002": 168, "C/10003": 247, "D/10004": 79, "Event Array": "[6,10blr000160505661e0b9b354e134006e]", "Process_id": 1234, "eventId": "FB1010000000016413653685818675"}, {"_id": "61432d8cb65e9b5c90a52ab8", "Date": "2021-01-13T18:30:00", "C/10001": 449, "B/10002": 43, "C/10003": 225, "D/10004": 774, "Event Array": "[9,10blr000160505661e0b9b354e134006e]", "Process_id": 1234, "eventId": "FB1010000000016413653685818675"}, {"_id": "61432d8cb65e9b5c90a52abb", "Date": "2021-01-16T18:30:00", "C/10001": 429, "B/10002": 424, "C/10003": 301, "D/10004": 730, "Event Array": "[12,10blr000160505661e0b9b354e134006e]", "Process_id": 1234, "eventId": "FB1010000000016413653685818675"}], "sampling_status": false, "sampling_status_text": "sample size is not adequate, univariate, 4<=1*10"}, "bernoulli": "work in progress"}
 ```
