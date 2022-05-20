@@ -9,6 +9,7 @@ database_details = {
     'database_name': 'mongodb',
     'collection': 'day001',
     'database': 'Bangalore',
+    'fields':['C/10001']
 }
 
 
