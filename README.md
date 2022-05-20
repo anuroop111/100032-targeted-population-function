@@ -120,6 +120,7 @@ Give 1 if expecting the output for the respective distribution
 Give 0 if not expecting output for that distribution
 
 ## Output of the api
+###Example output
 ```python
 {
    "normal":{
