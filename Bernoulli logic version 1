@@ -1,0 +1,13 @@
+continuing after fetching data from db using event function( 1 April to 30 April)
+Shuffle the data
+             Call dowellshuffling()
+             Define position as variable "Po"
+                       Input from user or frontend programmer
+          Ask user to enter the position from which the selection of data to be started  
+          Check whether Po lies between the minimum and maximum position of the data
+          Define number of units as variable "n"
+                      Input from user or frontend programmer
+                      select data from shuffled data from Po continuously till n items are selected.
+                      
+                      
+                      function output(Po,n,data,process time)
