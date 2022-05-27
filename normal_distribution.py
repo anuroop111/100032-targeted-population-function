@@ -1,15 +1,20 @@
-import pandas
 import random
 from samplingrule.samplingrule import dowellsamplingrule
 
 
 def normal_distribution(data, stage_input_list, fields, number_of_variable):
-    result = {
-        "is_error": True,
-        "error_text": "The fields is empty",
-    }
-
     if not fields:
+        result = {
+            "is_error": True,
+            "error_text": "The fields is empty",
+        }
+        return result
+
+    if not data:
+        result = {
+            "is_error": True,
+            "error_text": "There is no matching data into that date range",
+        }
         return result
 
     df = data
@@ -36,7 +41,12 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
                     raise Exception("not matched for datatype " + str(data_key))
 
         n = len(df)
-        is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
+
+        if number_of_variable == -1:
+            status = "Not expected"
+            is_acceptable = False
+        else:
+            is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
 
         result = {
             "is_error": False,
@@ -48,7 +58,7 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
     except Exception as e:
         result = {
             "is_error": True,
-            "error_text": e,
+            "error_text": str(e),
         }
 
     return result
