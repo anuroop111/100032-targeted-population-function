@@ -7,17 +7,14 @@ url = 'http://127.0.0.1:5000/api/targeted_population/'
 
 database_details = {
     'database_name': 'mongodb',
-    'collection': 'day001',
-    'database': 'Bangalore',
-    'fields':['C/10001']
+    'collection': 'licenses',
+    'database': 'license',
+    'fields':['eventId']
 }
 
 
-#database='Bangalore'
-#collection='day001'
-
 # number of variables for sampling rule
-number_of_variables = 1
+number_of_variables = -1
 
 # for first stage it's mandatory to have d=5
 # period can be 'custom' or 'last_1_day' or 'last_30_days' or 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time'
@@ -29,6 +26,7 @@ number_of_variables = 1
 
 time_input = {
     'column_name': 'Date',
+    'split': 'week',
     'period': 'life_time',
     'start_point': '2021/01/08',
     'end_point': '2021/01/25',
@@ -40,7 +38,7 @@ stage_input_list = [
 # distribution input
 distribution_input={
     'normal': 1,
-    'poisson':0,
+    'poisson':1,
     'binomial':0,
     'bernoulli':1
     
