@@ -23,6 +23,7 @@ time_input = {
     'period': 'life_time',
     'start_point': '2021/01/08',
     'end_point': '2021/01/25',
+    'split': 'week'
 }
 
 stage_input_list = [
@@ -79,8 +80,10 @@ time_input = {
 #### For time input
 Period can be 'custom' or 'last_1_day' or 'last_30_days' or 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time'
 if custom is given then need to specify start_point and end_point
+
 'split' value is required for poisson distribution.
 Split value can be 'week', 'hour', 'day', 'month',
+
 ```python
 stage_input_list = [
 
