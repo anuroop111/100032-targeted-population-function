@@ -59,7 +59,7 @@ def populate_db_query(time_input, fields):
     query = [
         {
             "$match": {
-                time_input['column_name']: {"$exists": True},
+                # time_input['column_name']: {"$exists": True},
                 'eventId': {'$in': event_ids},
             }
         }
