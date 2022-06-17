@@ -18,7 +18,7 @@ def fetch_event_ids_from_db(time_input):
     else:
         start_point_date = get_date(time_input['period'])
         start_dowell_time = dowell_time(start_point_date)
-        end_dowell_time = datetime.now()
+        end_dowell_time = dowell_time_now()
 
     condition = {'eventId': {"$exists": True},
                  'dowell_time': {'$gte': start_dowell_time, '$lte': end_dowell_time}}
