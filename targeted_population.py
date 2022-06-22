@@ -39,7 +39,6 @@ def targeted_population(distribution_input, database_details, time_input, number
     ]
     --------------------------------------
     distribution_input, database_details, time_input, number_of_variable, stage_input_list
-
     """
 
     if distribution_input['normal'] == 1:

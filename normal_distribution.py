@@ -17,11 +17,12 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
         }
         return result
 
-    df = data
+    final_result = []
     try:
         for data_key in fields:
             # df = df.astype({'C/10001': 'float64', 'B/10002': 'float64', 'C/10003': 'float64', 'D/10004': 'float64'})
             # filter for all stages
+            df = data
             for stage in stage_input_list:
                 d = stage['data_type']
 
@@ -40,7 +41,9 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
                 if not df:
                     raise Exception("not matched for datatype " + str(data_key))
 
-        n = len(df)
+            final_result.append(df)
+
+        n = len(data)
 
         if number_of_variable == -1:
             status = "Not expected"
@@ -50,7 +53,7 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
 
         result = {
             "is_error": False,
-            "data": df,
+            "data": final_result,
             "sampling_status": is_acceptable,
             "sampling_status_text": status,
         }
