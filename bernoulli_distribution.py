@@ -5,7 +5,7 @@ import requests
 import time
 
 
-def bernoulli_distribution():
+def bernoulli_distribution(data):
     # shuffle data by passing the data from the db through the API
     start_time = time.time()
 

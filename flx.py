@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask import request
+
 import json
 from bson import ObjectId
 from datetime import date, datetime
@@ -34,6 +35,12 @@ def targeted_population_json_response():
                                      stage_input_list)
 
         return JSONEncoder().encode(result)
+
+
+@app.route('/', methods=["GET"])
+def frontend_event_create():
+    if request.method == "GET":
+        return render_template('index.html')
 
 
 if __name__ == '__main__':

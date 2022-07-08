@@ -107,6 +107,11 @@ def filter_df_population_average(df, column_name, stage):
     result = []
 
     for index in range(0, len(df)):
+
+        ## check for the column name exists at that index
+        ##
+        if column_name not in df[index]:
+            continue
         try:
             current_mean = sum_of_taken_numbers / taken_number_count
         except Exception:
@@ -161,7 +166,7 @@ def filter_df_population_average(df, column_name, stage):
 
 
 def filter_df_max_point(df, column_name, stage):
-    newpanda = df.sort_values(by=[column_name])
+
     start = float(stage['start_point'])
     r = stage['r']
     range_end = start + r
@@ -179,6 +184,9 @@ def filter_df_max_point(df, column_name, stage):
     result = []
 
     for index in range(0, len(df)):
+        if column_name not in df[index]:
+            continue
+
         if summation >= max_sum_max or df[index][column_name] > end:
             continue
 

@@ -54,6 +54,8 @@ def targeted_population(distribution_input, database_details, time_input, number
         distribution_results['binomial'] = binomial_distribution(data, split_variable, split_choice)
 
     if distribution_input['bernoulli'] == 1:
-        distribution_results['bernoulli'] = bernoulli_distribution()
+        test_number=23
+        error=7
+        distribution_results['bernoulli'] = bernoulli_distribution(test_number, error)
 
     return distribution_results

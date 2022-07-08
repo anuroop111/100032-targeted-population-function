@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+    <title>targeted population</title>
+  </head>
+
+  <body>
+    <form id="targeted-population-form" action="/api/targeted_population" method="POST" target="_blank" class="m-4" enctype="application/json">
+      <div class="mb-3">
+        <select  name="database" class="form-select" aria-label="Default select example">
+          <option selected>Select Database</option>
+          <option value="mongodb">MongoDB</option>
+        </select>
+      </div>
+
+      <div class="com-12">
+        <div class="mb-3">
+          <input
+            id="database-input"
+            name="database"
+            type="text"
+            class="form-control"
+            placeholder="database"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            name="collection"
+            type="text"
+            class="form-control"
+            placeholder="collection"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            name="fields"
+            type="text"
+            class="form-control"
+            placeholder="fields(comma separated)"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3 mb-2">
+          <input
+            name="normal"
+            type="number"
+            class="form-control"
+            placeholder="normal(0 or 1)"
+          />
+       </div>
+
+        <div class="col-3 mb-2">
+          <input
+            name="poisson"
+            type="number"
+            class="form-control"
+            placeholder="poisson(0 or 1)"
+          />
+       </div>
+
+        <div class="col-3 mb-2">
+          <input
+            name="binomial"
+            type="number"
+            class="form-control"
+            placeholder="binomial(0 or 1)"
+          />
+       </div>
+        <div class="col-3 mb-2">
+          <input
+            name="bernoulli"
+            type="number"
+            class="form-control"
+            placeholder="bernoulli(0 or 1)"
+          />
+       </div>
+
+      </div>
+
+
+
+      <div class="com-12">
+        <div class="col">
+          <div class="mb-3">
+            <select name="period" class="form-select" aria-label="Period">
+                      <option value="custom">Custom</option>
+                      <option value="last_1_day">last 1 day</option>
+                      <option value="last_7_days">last 7 days</option>
+                      <option value="last_30_days">last 30 days</option>
+                      <option value="last_90_days">last 90 days</option>
+                      <option value="last_180_days">last 180 days</option>
+                      <option value="last_1_year">last 1 year</option>
+                      <option value="life_time">life time</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <input
+            name="start_point"
+            type="text"
+            class="form-control"
+            placeholder="2021/01/08"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            name="end_point"
+            type="text"
+            class="form-control"
+            placeholder="2021/01/25"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            name="split"
+            type="text"
+            class="form-control"
+            placeholder="split"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <input name="datatype" type="number" class="form-control" placeholder="datatype(d)"/>
+        </div>
+
+        <div class="col">
+          <div class="mb-3">
+            <select name="m_or_A_selction" class="form-select" aria-label="Default select example">
+              <option value="maximum_point" selected>Maximum Point</option>
+              <option value="population_average">Population Average</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <input name="m_or_A_value" type="number" class="form-control" placeholder="m/A" />
+        </div>
+        <div class="col">
+          <input name="error" type="number" class="form-control" placeholder="error(%)" />
+        </div>
+
+
+        <div class="col">
+          <input name="r" type="number" class="form-control" placeholder="range(r)" />
+        </div>
+
+
+        <div class="col">
+          <input name="start_point" type="text" class="form-control" placeholder="start point" />
+        </div>
+
+        <div class="col">
+          <input name="end_point" type="text" class="form-control" placeholder="end poin" />
+        </div>
+
+        <div class="col">
+          <input
+          name="a"
+            type="number"
+            class="form-control"
+            placeholder="number of units (a)"
+          />
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col">
+          <input name="datatype" type="number" class="form-control" placeholder="datatype(d)" />
+        </div>
+
+        <div class="col">
+          <div class="mb-3">
+            <select name="m_or_A_selction" class="form-select" aria-label="Default select example">
+
+              <option value="maximum_point" selected>Maximum Point</option>
+              <option value="population_average">Population Average</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <input name="m_or_A_value" type="number" class="form-control" placeholder="m/A" />
+        </div>
+        <div class="col">
+          <input name="error" type="number" class="form-control" placeholder="error(%)" />
+        </div>
+
+
+        <div class="col">
+          <input name="r" type="number" class="form-control" placeholder="range(r)" />
+        </div>
+
+        <div class="col">
+          <input name="start_point" type="text" class="form-control" placeholder="start point" />
+        </div>
+
+        <div class="col">
+          <input name="end_point" type="text" class="form-control" placeholder="end poin" />
+        </div>
+
+        <div class="col">
+          <input
+          name="a"
+            type="number"
+            class="form-control"
+            placeholder="number of units (a)"
+          />
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col">
+          <input name="datatype" type="number" class="form-control" placeholder="datatype(d)" />
+        </div>
+
+        <div class="col">
+          <div class="mb-3">
+            <select name="m_or_A_selction" class="form-select" aria-label="Default select example">
+
+              <option value="maximum_point" selected>Maximum Point</option>
+              <option value="population_average">Population Average</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <input name="m_or_A_value" type="number" class="form-control" placeholder="m/A" />
+        </div>
+
+        <div class="col">
+          <input name="error" type="number" class="form-control" placeholder="error(%)" />
+        </div>
+
+        <div class="col">
+          <input name="r" type="number" class="form-control" placeholder="range(r)" />
+        </div>
+
+        <div class="col">
+          <input name="start_point" type="text" class="form-control" placeholder="start point" />
+        </div>
+
+        <div class="col">
+          <input name="end_point" type="text" class="form-control" placeholder="end poin" />
+        </div>
+
+        <div class="col">
+          <input
+          name="a"
+            type="number"
+            class="form-control"
+            placeholder="number of units (a)"
+          />
+        </div>
+      </div>
+
+      <div class="row">lot, datatype = 7</div>
+            <div class="row">
+              <div class="col">
+                <input name="datatype" type="number" class="form-control" placeholder="datatype(d)"/>
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <select name="p_r_selection" class="form-select" aria-label="Default select example">
+                    <option value="proportion" selected>Proportion</option>
+                    <option value="random_generation">random generation</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <input name="proportion" type="number" class="form-control" placeholder="proportion" />
+              </div>
+              <div class="col">
+                <input name="first_position" type="number" class="form-control" placeholder="first position" />
+              </div>
+
+
+              <div class="col">
+                <input name="last_position" type="number" class="form-control" placeholder="last position"/>
+              </div>
+            </div>
+
+          <div class="row">
+            <label>Sampling rule</label>
+            <div class="col">
+              <input name="number_of_variable" type="number" class="form-control" placeholder="number of variable(h)"/>
+            </div>
+          </div>
+
+
+
+
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+      <div id="output-section"></div>
+      <div id="output-section-poisson"></div>
+      <div id="output-section-bern"></div>
+      <div id="output-section-binomial"></div>
+    </form>
+
+
+
+
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename = 'index.js') }}"
+    ></script>
+  </body>
+</html>

@@ -38,9 +38,9 @@ stage_input_list = [
 # distribution input
 distribution_input={
     'normal': 1,
-    'poisson':1,
+    'poisson':0,
     'binomial':0,
-    'bernoulli':1
+    'bernoulli':0
     
 }
 
@@ -49,8 +49,8 @@ request_data={
     'database_details': database_details,
     'distribution_input': distribution_input,
     'number_of_variable':number_of_variables,
-    'stages':stage_input_list,
-    'time_input':time_input,
+    'stages': stage_input_list,
+    'time_input': time_input,
 }
 
 headers = {'content-type': 'application/json'}
