@@ -1,1 +1,210 @@
-
+start													
+	Call dowelltargetedpopulation function(database,distribution,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)												
+													
+	Select the database in which we want to store the data after collection 												
+	Collect data dynamically and store in Database												
+	Note the time while collecting data and store it along with data												
+	Define the type of data as variable "d"									
+	Select "d"												
+		Display a list " length(1),area(2),volume(3),weight(4),time(5),quantity(6),lot(7)"							
+    
+	Call dowellmultistagesampling function using list mentioned above instead of index function(will explain the multistage sampling function)												
+		At each stage,a type(d) to be selected,if d='0' then stop at that stage											
+			input from user or frontend programmer	
+      
+      Note :	At first stage,time to be selected as type of start and end point irrespective of other stages												
+													
+	 connect to database												
+		Take fields information from database											
+			Select a field for which data to be taken										
+	Select the start point from which the data to be taken from database(selected field in case of length,area,volume,weight,lot)												
+		Input from user or frontend programmer											
+	Select the end point upto which the data to be taken from database (selected field in case of length,area,volume,weight,lot)												
+		input from user or frontend programmer											
+													
+	Fetch the data for the selected start and end point and a value fron dowellevent table(Regional time,Dowell time,Location (GPS),Object/form/flow ,Instance ID, context (array))												
+		Goto event table and get the eventID corresponding to Regional time/Dowell time/Location (GPS)/Object/form/flow ,Instance ID, context (array)											
+		Get the table name and field details from context array											
+		Go the the table retrieved from above step											
+		Fetch rows corresponding to start point and end point from table( mysql and mongodb)											
+	Explanation:	At first stage if time is selected,ask user or frontend programmer for start and end point											
+			let the start point is April 1 and end point is April 30										
+				Ask for another stage,if area is selected(say)									
+					Again ask the start and end point for second stage and continue in same way until '0' is selected for any stage and maximum number of stages occured which is 5								
+													
+													
+	At each stage except first,												
+		if d=0, is selected											
+			stop asking at that point										
+		if d=1,is selected											
+			Available information about " Maximum point or Population Average"										
+				User has to select one from the above options									
+			if maximum point is selected,										
+				define the maximum point as variable "m"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that the sum of data of length should be "m"									
+			if Population Average is selected,										
+				define the Population Average as variable "A"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that it should have mean as unbiased estimate of population average									
+			define range of selection as variable "r"										
+				Input from frontend programmer or user									
+			Select the start point of the range "r"										
+				Input from frontend programmer or user									
+			Select the end point of the range "r"										
+				Input from frontend programmer or user									
+			Define number of units to be selected in range "r" as variable "a"("a" number of units to be selected within the range "r")										
+				Input from frontend programmer or user									
+			check if "a" is non- negative ,then continue										
+				otherwise prompt " number of units cannot be negative"									
+	Note:		"a" should not be more than the total units in selected range										
+													
+		if d=2,is selected											
+			Available information about " Maximum point or Population Average"										
+				User has to select one from the above options									
+			if maximum point is selected,										
+				define the maximum point as variable "m"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that the sum of data of area should be "m"									
+			if Population Average is selected,										
+				define the Population Average as variable "A"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that it should have mean as unbiased estimate of population average									
+													
+													
+			define range of selection as variable "r"										
+				Input from frontend programmer or user									
+			Select the start point of the range "r"										
+				Input from frontend programmer or user									
+			Select the end point of the range "r"										
+				Input from frontend programmer or user									
+			Define number of units to be selected in range "r" as variable "a"("a" number of units to be selected within the range "r")										
+				Input from frontend programmer or user									
+			check if "a" is non- negative ,then continue										
+				otherwise prompt " number of units cannot be negative"									
+			"a" should not be more than the total units in selected range										
+													
+		if d=3,is selected											
+			Available information about " Maximum point or Population Average"										
+				User has to select one from the above options									
+			if maximum point is selected,										
+				define the maximum point as variable "m"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that the sum of it should be "m"									
+			if Population Average is selected,										
+				define the Population Average as variable "A"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that it should have mean as unbiased estimate of population average									
+			define range of selection as variable "r"										
+				Input from frontend programmer or user									
+			Select the start point of the range "r"										
+				Input from frontend programmer or user									
+			Select the end point of the range "r"										
+				Input from frontend programmer or user									
+			Define number of units to be selected in range "r" as variable "a"("a" number of units to be selected within the range "r")										
+				Input from frontend programmer or user									
+			check if "a" is non- negative ,then continue										
+				otherwise prompt " number of units cannot be negative"									
+			"a" should not be more than the total units in selected range										
+		if d=4, is selected											
+			Available information about " Maximum point or Population Average"										
+				User has to select one from the above options									
+			if maximum point is selected,										
+				define the maximum point as variable "m"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that the sum of it should be "m"									
+			if Population Average is selected,										
+				define the Population Average as variable "A"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that it should have mean as unbiased estimate of population average									
+			define range of selection as variable "r"										
+				Input from frontend programmer or user									
+			Select the start point of the range "r"										
+				Input from frontend programmer or user									
+			Select the end point of the range "r"										
+				Input from frontend programmer or user									
+			Define number of units to be selected in range "r" as variable "a"("a" number of units to be selected within the range "r")										
+				Input from frontend programmer or user									
+			check if "a" is non- negative ,then continue										
+				otherwise prompt " number of units cannot be negative"									
+			"a" should not be more than the total units in selected range										
+		if d=5 , is selected											
+			select the start point from which the data to  be selected										
+				Input from frontend programmer or user									
+			select the end point upto which the data to be selected										
+				Input from frontend programmer or user									
+			fetch the data for the selected start and end point										
+		if d=6,is selected											
+			Available information about " Maximum point or Population Average"										
+				User has to select one from the above options									
+			if maximum point is selected,										
+				define the maximum point as variable "m"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that the sum of data of quantity should be "m"									
+			if Population Average is selected,										
+				define the Population Average as variable "A"									
+					Input from frontend programmer or user								
+				data to be fetched from the selected dataset such that it should have mean as unbiased estimate of population average									
+			define range of selection as variable "r"										
+				Input from frontend programmer or user									
+			Select the start point of the range "r"										
+				Input from frontend programmer or user									
+			Select the end point of the range "r"										
+				Input from frontend programmer or user									
+			Define number of units to be selected in range "r" as variable "a"("a" number of units to be selected within the range "r")										
+				Input from frontend programmer or user									
+			check if "a" is non- negative ,then continue										
+				otherwise prompt " number of units cannot be negative"									
+			"a" should not be more than the total units in selected range										
+													
+		if d=7,is selected											
+			if we want to select a random lot from the dataset										
+				shuffle the data									
+					Call dowellshuffling function()								
+				define lot size as variable "l"									
+					Display a list containing options for deciding about lot size " proportion,random generation"								
+						User need to select one from the above list							
+				if proportion is selected,									
+					define proportion as variable "p"								
+						What proportion of dataset to be selected as lot?							
+							Input from user						
+				if random generation is selected,									
+					Generate random number using inbuilt function to decide lot size 								
+													
+				specify the range of lot size									
+					Define the first position as variable "F"								
+						Input from frontend programer or user							
+					Define the last position as variable "L"								
+						Input from frontend programer or user							
+					select the first position from which selection to be done								
+						Input from frontend programer or user							
+					select the last position of the range  upto which selection to be done								
+						Input from frontend programer or user							
+					Check the difference between L and F								
+						if difference = "l",then continue							
+						otherwise prompt"selection is not matching the required lot size"							
+													
+			Select distance as variable "d"										
+				Input from user or frontend programmer									
+				Find latitude and longitude from the database from the event table corresponding to event ID									
+					Fetch information accordingly								
+				Check the adequacy of the size of data selected									
+					Call dowellsamplingrule function()								
+			Note:	if the size is not adequate,ask frontend programmer or user to loose some conditions over range or maximum point									
+													
+				Define distribution as variable "D"									
+					Call dowelldistribution function()								
+		Call dowelleventcreation ()											
+		Function output(event ID,required data,size,type,maximum point,Population Average,start point,end point,number of units,distribution,split,L,F,l, process time)											
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
