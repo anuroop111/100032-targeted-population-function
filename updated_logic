@@ -1,7 +1,12 @@
 start													
-	Call dowelltargetedpopulation function(database,distribution,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
+	Call dowelltargetedpopulation function(database,Dist(X=0,1,2,3),type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
 	
-	Select the database in which we want to store the data after collection 												
+	Select the database in which we want to store the data after collection 
+	Let X be variable for the Distribution functions : if X=0  Normal distribution is selected ,Then it will return  value 1 when data follows normal and 0 when data not follows normal
+	                                                   if X=1  Poisson distribution is selected ,Then it will return  value 1 when data follows poisson and 0 when data not follows poisson
+	                                                   if X=2  Binomial distribution is selected ,Then it will return  value 1 when data follows Binomial  and 0 when data not follows Binomial
+							   if X=3  Bernoulli distribution is selected ,Then it will return  value 1 when data follows Bernoulli  and 0 when data not follows Bernoulli
+							   
 	Collect data dynamically and store in Database												
 	Note the time while collecting data and store it along with data												
 	Define the type of data as variable "d"									
@@ -33,7 +38,8 @@ start
 				Ask for another stage,if area is selected(say)									
 					Again ask the start and end point for second stage and continue in same way until '0' is selected for any stage and maximum number of stages occured which is 5								
 													
-	#### When data follows normal distribution												
+	#### Normal distribution logic#################################################################################################################################################################################
+	
 	At each stage except first,												
 		if d=0, is selected											
 			stop asking at that point										
@@ -192,11 +198,2055 @@ start
 				Check the adequacy of the size of data selected									
 					Call dowellsamplingrule function()								
 			Note:	if the size is not adequate,ask frontend programmer or user to loose some conditions over range or maximum point									
-													
-				Define distribution as variable "D"									
-					Call dowelldistribution function()								
+																					
 		Call dowelleventcreation ()											
-		Function output(event ID,required data,size,type,maximum point,Population Average,start point,end point,number of units,distribution,split,L,F,l, process time)											
+		Function output(event ID,required data,size,type,maximum point,Population Average,start point,end point,number of units,0 0r 1,split,L,F,l, process time)
+		
+		###Poisson distribution logic#######################################################################################################################################
+		d=1																									
+	Available information about " Maximum point or Population Average"																								
+		User has to select one from the above options																							
+	if maximum point is selected,																								
+		define the number of units to be selected in range r as variable  "N"																							
+			Input from frontend programmer or user																						
+		define the maximum point for the whole sample as variable "M"																							
+			Input from frontend programmer or user																						
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																			
+			Input from frontend programmer or user																						
+			NOTE:  Σ mi = M																						
+		for ith split follow  the following procedure																							
+			Select the start point of the range "r"																						
+				Input from frontend programmer or user																					
+			Select the end point of the range "r"																						
+				Input from frontend programmer or user																					
+			define range of selection as variable "r"																						
+				Input from frontend programmer or user																					
+			fetch values from the data such that their sum is mi																						
+			now define the ith split size as ni			i=1,2,3,  ...k																			
+			repeat this process k times to make k splits			(splits should be non overlapping	)																		
+			NOTE:    Σ ni  = N																						
+																									
+	if Population Average is selected,																								
+		define the Population Average as variable "A"																							
+																									
+		define the number of units in the sample as variable  "N"																							
+																									
+		define the maximum point for the whole sample as variable "M"																							
+																									
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		now for ith split fetch data such that split mean "si"  is unbiased estimator of population average A																							
+			define ni as split size		i=1,2,3...... k																				
+		                            repeat this process for k times to form k splits																							
+			Note: Σsi=A																						
+		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
+																									
+d=2																									
+																									
+	Available information about " Maximum point or Population Average"																								
+		User has to select one from the above options																							
+	if maximum point is selected,																								
+		define the number of units to be selected in range r as variable  "N"																							
+			Input from frontend programmer or user																						
+		define the maximum point for the whole sample as variable "M"																							
+			Input from frontend programmer or user																						
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																			
+			Input from frontend programmer or user																						
+			NOTE:  Σ mi = M																						
+		for ith split follow  the following procedure																							
+			Select the start point of the range "r"																						
+				Input from frontend programmer or user																					
+			Select the end point of the range "r"																						
+				Input from frontend programmer or user																					
+			define range of selection as variable "r"																						
+				Input from frontend programmer or user																					
+			fetch values from the data such that their sum is mi																						
+			now define the ith split size as ni			i=1,2,3,  ...k																			
+			repeat this process k times to make k splits			(splits should be non overlapping)																			
+			NOTE:    Σ ni  = N																						
+																									
+	if Population Average is selected,																								
+		define the Population Average as variable "A"																							
+																									
+		define the number of units in the sample as variable  "N"																							
+																									
+		define the maximum point for the whole sample as variable "M"																							
+																									
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		now for ith split fetch data such that split mean  "si" is unbiased estimator of population average A																							
+			define ni as split size		i=1,2,3...... k																				
+		                            repeat this process for k times to form k splits																							
+			Note: Σsi= A																						
+		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
+																									
+d=3																									
+	Available information about " Maximum point or Population Average"																								
+		User has to select one from the above options																							
+	if maximum point is selected,																								
+																									
+	define the number of units to be selected in range r as variable  "N"																								
+		Input from frontend programmer or user																							
+	define the maximum point for the whole sample as variable "M"																								
+		Input from frontend programmer or user																							
+	defiine the number of split as variable "k"																								
+	                        input from fronted programmer and user																								
+	define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																				
+		Input from frontend programmer or user																							
+		NOTE:  Σ mi = M																							
+	for ith split follow  the following procedure																								
+		Select the start point of the range "r"																							
+			Input from frontend programmer or user																						
+		Select the end point of the range "r"																							
+			Input from frontend programmer or user																						
+		define range of selection as variable "r"																							
+			Input from frontend programmer or user																						
+		fetch values from the data such that their sum is mi																							
+		now define the ith split size as ni			i=1,2,3,  ...k																				
+		repeat this process k times to make k splits			(splits should be non overlapping																				
+		NOTE:    Σ ni  = N																							
+																									
+if Population Average is selected,																									
+	define the Population Average as variable "A"																								
+																									
+	define the number of units in the sample as variable  "N"																								
+																									
+	define the maximum point for the whole sample as variable "M"																								
+																									
+	defiine the number of split as variable "k"																								
+	                        input from fronted programmer and user																								
+	now for ith split fetch data such that split mean  "si" is unbiased estimator of population average A																								
+		define ni as split size		i=1,2,3...... k																					
+	                            repeat this process for k times to form k splits																								
+		Note: Σsi=  A																							
+	data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																								
+																									
+d=4																									
+	Available information about " Maximum point or Population Average"																								
+		User has to select one from the above options																							
+	if maximum point is selected,																								
+		define the number of units to be selected in range r as variable  "N"																							
+			Input from frontend programmer or user																						
+		define the maximum point for the whole sample as variable "M"																							
+			Input from frontend programmer or user																						
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																			
+			Input from frontend programmer or user																						
+			NOTE:  Σ mi = M																						
+		for ith split follow  the following procedure																							
+			Select the start point of the range "r"																						
+				Input from frontend programmer or user																					
+			Select the end point of the range "r"																						
+				Input from frontend programmer or user																					
+			define range of selection as variable "r"																						
+				Input from frontend programmer or user																					
+			fetch values from the data such that their sum is mi																						
+			now define the ith split size as ni			i=1,2,3,  ...k																			
+			repeat this process k times to make k splits			(splits should be non overlapping																			
+			NOTE:    Σ ni  = N																						
+																									
+		if Population Average is selected,																							
+			define the Population Average as variable "A"																						
+																									
+			define the number of units in the sample as variable  "N"																						
+																									
+			define the maximum point for the whole sample as variable "M"																						
+																									
+			defiine the number of split as variable "k"																						
+			                        input from fronted programmer and user																						
+			now for ith split fetch data such that split mean "si"is unbiased estimator of population average A																						
+				define ni as split size		i=1,2,3...... k																			
+			                            repeat this process for k times to form k splits																						
+				Note: Σsi=  A																					
+			data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																						
+																									
+																									
+d=5																									
+	defiine the number of split as variable "k"																								
+	                            input from fronted programmer and user																								
+	process for making ith split  is																								
+	             define the starting time 																								
+	                             intput from fronted user and programmer																								
+	             define the end time 																								
+	                              input from fronted user																								
+	repeat this process k times to form k splits																								
+																									
+d=6																									
+	Available information about " Maximum point or Population Average"																								
+		User has to select one from the above options																							
+	if maximum point is selected,																								
+		define the number of units to be selected in range r as variable  "N"																							
+			Input from frontend programmer or user																						
+		define the maximum point for the whole sample as variable "M"																							
+			Input from frontend programmer or user																						
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																			
+			Input from frontend programmer or user																						
+			NOTE:  Σ mi = M																						
+		for ith split follow  the following procedure																							
+			Select the start point of the range "r"																						
+				Input from frontend programmer or user																					
+			Select the end point of the range "r"																						
+				Input from frontend programmer or user																					
+			define range of selection as variable "r"																						
+				Input from frontend programmer or user																					
+			fetch values from the data such that their sum is mi																						
+			now define the ith split size as ni			i=1,2,3,  ...k																			
+			repeat this process k times to make k splits			(splits should be non overlapping																			
+			NOTE:    Σ ni  = N																						
+																									
+	if Population Average is selected,																								
+		define the Population Average as variable "A"																							
+																									
+		define the number of units in the sample as variable  "N"																							
+																									
+		define the maximum point for the whole sample as variable "M"																							
+																									
+		defiine the number of split as variable "k"																							
+		                        input from fronted programmer and user																							
+		now for ith split fetch data such that split mean  "si"is unbiased estimator of population average A																							
+			define ni as split size		i=1,2,3...... k																				
+		                            repeat this process for k times to form k splits																							
+			Note: Σsi=A																						
+		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
+																									
+d=7																									
+	defiine the number of split as variable "k"																								
+	                            input from fronted programmer and user																								
+	now process to form ith split																								
+	shuffle the data																								
+		Call dowellshuffling function()																							
+	define lot size as variable "l"																								
+		Display a list containing options for deciding about lot size " proportion,random generation"																							
+			User need to select one from the above list																						
+	if proportion is selected,																								
+		define proportion as variable "p"																							
+			What proportion of dataset to be selected as lot?																						
+				Input from user																					
+	if random generation is selected,																								
+		Generate random number using inbuilt function to decide lot size 																							
+																									
+	specify the range of lot size																								
+		Define the first position as variable "F"																							
+			Input from frontend programer or user																						
+		Define the last position as variable "L"																							
+			Input from frontend programer or user																						
+		select the first position from which selection to be done																							
+			Input from frontend programer or user																						
+		select the last position of the range  upto which selection to be done																							
+			Input from frontend programer or user																						
+		Check the difference between L and F																							
+			if difference = "l",then continue																						
+			otherwise prompt"selection is not matching the required lot size"																						
+																									
+		Select distance as variable "d"																							
+			Input from user or frontend programmer																						
+			Find latitude and longitude from the database from the event table corresponding to event ID																						
+				Fetch information accordingly																					
+			Check the adequacy of the size of data selected																						
+				Call dowellsamplingrule function()																					
+		Note:	if the size is not adequate,ask frontend programmer or user to loose some conditions over range or maximum point																						
+																									
+																									
+	##Binomial distribution is selected#################################################################################		
+	start																									
+	continuing after fetching data from db using event function( 1 April to 30 April)																								
+	define Number of variables allowed as variable "N"																								
+		Input from user or frontend programmer																							
+	define split as variable "S"																								
+		Input from user or frontend programmer																							
+	if d=1,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained																					
+Note:	eliminate last split if it is not =N,or check accuracy																								
+		if last split size is not equals to N																							
+			Display list to user containing " eliminate or check accuracy"																						
+		if "eliminate" is selected,																							
+			then eliminate the last split																						
+		if "check accuracy" is selected,																							
+			 define allowable error as variable "E"																						
+				Input from user or frontend programmer																					
+					check if last split size is lying within (N - EN,N+EN)		(E is in %)																		
+						if yes, then consider the split																			
+						otherwise eliminate																			
+																									
+		define the condition for success																							
+			Input from user or frontend programmer			equal,less than,greater than																			
+				display a list of options to user for defining the condition for success "less than, greater than,equal to,less than equal to,greater than equals to"																					
+					selection from above list by  user or frontend programmer																				
+				if less than is selected,																					
+					define "s" as variable																				
+						Input from user or frontend programmer																			
+					input value of "s" (atleast greater than the minimum value of the data given"																				
+				if greater than is selected,																					
+					define "s" as variable																				
+						Input from user or frontend programmer																			
+					input value of "s" (atleast less than the maximum value of the data given"																				
+				if equals to is selected,																					
+					check data is having numbers or attributes																				
+						if numbers,then input s= number																			
+						if attribute,then input s= attribute 																			
+			note:	similarly for other two																					
+																									
+			check the fetched data in each split according to the condition																						
+				mark each data value as success or failure																					
+				count number of successes in each split																					
+			call dowelleventcreation()																						
+																									
+		function output(event id,data,no of successes,splits,s)	
+		
+		
+	## Bernoullie distribution logic ###################################################################################################################################
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
+																									
 													
 													
 													
