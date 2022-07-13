@@ -1,6 +1,6 @@
 start													
-	Call dowelltargetedpopulation function(database,distribution,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)												
-													
+	Call dowelltargetedpopulation function(database,distribution,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
+	
 	Select the database in which we want to store the data after collection 												
 	Collect data dynamically and store in Database												
 	Note the time while collecting data and store it along with data												
@@ -8,11 +8,12 @@ start
 	Select "d"												
 		Display a list " length(1),area(2),volume(3),weight(4),time(5),quantity(6),lot(7)"							
     
-	Call dowellmultistagesampling function using list mentioned above instead of index function(will explain the multistage sampling function)												
+	Call dowellmultistagesampling function using list mentioned above instead of index function(will explain the multistage sampling function)
+	
 		At each stage,a type(d) to be selected,if d='0' then stop at that stage											
 			input from user or frontend programmer	
-      
-      Note :	At first stage,time to be selected as type of start and end point irrespective of other stages												
+			
+     Note :At first stage,time to be selected as type of start and end point irrespective of other stages												
 													
 	 connect to database												
 		Take fields information from database											
@@ -32,7 +33,7 @@ start
 				Ask for another stage,if area is selected(say)									
 					Again ask the start and end point for second stage and continue in same way until '0' is selected for any stage and maximum number of stages occured which is 5								
 													
-													
+	#### When data follows normal distribution												
 	At each stage except first,												
 		if d=0, is selected											
 			stop asking at that point										
