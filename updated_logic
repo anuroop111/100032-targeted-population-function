@@ -37,8 +37,9 @@ start
 			let the start point is April 1 and end point is April 30										
 				Ask for another stage,if area is selected(say)									
 					Again ask the start and end point for second stage and continue in same way until '0' is selected for any stage and maximum number of stages occured which is 5								
-													
-	#### Normal distribution logic#################################################################################################################################################################################
+	 1. PROBABILITY DISTRIBUTIONS	
+	 
+	  1.1 Normal distribution 
 	
 	At each stage except first,												
 		if d=0, is selected											
@@ -202,7 +203,7 @@ start
 		Call dowelleventcreation ()											
 		Function output(event ID,required data,size,type,maximum point,Population Average,start point,end point,number of units,0 0r 1,split,L,F,l, process time)
 		
-		###Poisson distribution logic#######################################################################################################################################
+		1.2 Poisson distribution 
 		d=1																									
 	Available information about " Maximum point or Population Average"																								
 		User has to select one from the above options																							
@@ -454,7 +455,8 @@ d=7
 		Note:	if the size is not adequate,ask frontend programmer or user to loose some conditions over range or maximum point																						
 																									
 																									
-	##Binomial distribution is selected#################################################################################		
+	1.3 Binomial distribution	
+	
 	start																									
 	continuing after fetching data from db using event function( 1 April to 30 April)																								
 	define Number of variables allowed as variable "N"																								
@@ -511,7 +513,8 @@ Note:	eliminate last split if it is not =N,or check accuracy
 		function output(event id,data,no of successes,splits,s)	
 		
 		
-	## Bernoullie distribution logic ###################################################################################################################################
+	1.4 Bernoullie distribution
+	
 	continuing after fetching data from db using event function( 1 April to 30 April)
 Shuffle the data
              Call dowellshuffling()
@@ -525,7 +528,7 @@ Shuffle the data
                       
                       
                       function output(Po,n,data,process time)	
-	## Sampling rule #########################################################################################################################################	
+2.1 Sampling rule 	
 	start																									
              Call dowellsampling rules(sample size,number of categories,number of variables)																									
 																									
@@ -553,7 +556,7 @@ Shuffle the data
 																									
 	Function output(Acceptance of sample size,evidence,sample size,process time)
 	
-	####### Multistage sampling ###########################################################################################################################
+	2.2 Multistage sampling 
 
 	start																									
 	Call dowellmultistagesampling(Number of Stages,First Stage Units,Second Stage units,...)																								
@@ -593,7 +596,7 @@ Shuffle the data
 																									
 	Function output(sample values at each stage,process time,permutation chosen)	
 	
-	######## Index function############################################################################################################################
+	2.3 Index function
 Start																									
 	Call dowellindex function()																								
 																									
