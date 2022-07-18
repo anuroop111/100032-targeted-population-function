@@ -1,5 +1,5 @@
 start													
-	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},period ={"1 day","1week","1month"," 4 months","6 months","1 year", "life long"} ,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
+	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},period ={" last 1 day","last 1week","last 1 month","last 4 months","last 6 months","last 1 year", "life long"} ,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
 	
 	Select the database in which we want to store the data after collection 
 	
