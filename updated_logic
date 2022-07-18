@@ -1,12 +1,78 @@
 start													
-	Call dowelltargetedpopulation function(database,Dist(X=0,1,2,3),type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
+	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
 	
 	Select the database in which we want to store the data after collection 
-	Let X be variable for the Distribution functions : if X=0  Normal distribution is selected ,Then it will return  value 1 when data follows normal and 0 when data not follows normal
-	                                                   if X=1  Poisson distribution is selected ,Then it will return  value 1 when data follows poisson and 0 when data not follows poisson
-	                                                   if X=2  Binomial distribution is selected ,Then it will return  value 1 when data follows Binomial  and 0 when data not follows Binomial
-							   if X=3  Bernoulli distribution is selected ,Then it will return  value 1 when data follows Bernoulli  and 0 when data not follows Bernoulli
-							   
+	Let  “ D1 ” denote the variable for Normal distribution
+       “ D2 ” denotes the variable for Poisson distribution
+       “ D3 ” denotes the variable for Binomial distribution
+       “ D4 ” denotes the variable for the Bernoulli distribution
+
+
+ Select any one item from the list “distribution”
+     
+        Input from the user 
+
+
+          Cases: 1) If Normal distribution is selected
+                             
+                                   Select any one item from D1={0,1}
+                                    
+                                     If  ‘1’ is selected
+                                                 Input from the user 
+                                     
+                                     Then follow section 1.1 by the  Backend programmer 
+                                
+                                    If  ‘0’ is selected
+                                                 Input from the user 
+                                   
+                                    Then not follow section 1.1  by the Back end programmer
+
+
+                       2)If Poisson distribution is selected
+                             
+                                   Select any one item from D2={0,1}
+                                    
+                                     If  ‘1’ is selected
+                                                 Input from the user 
+                                     
+                                     Then follow section 1.2 by the  Backend programmer 
+                                
+                                    If  ‘0’ is selected
+                                                 Input from the user 
+                                   
+                                    Then not follow section 1.2  by the Back end programmer
+
+                       3)If Binomial distribution is selected
+                             
+                                   Select any one item from D3={0,1}
+                                    
+                                     If  ‘1’ is selected
+                                                 Input from the user 
+                                     
+                                     Then follow section 1.3 by the  Backend programmer 
+                                
+                                    If  ‘0’ is selected
+                                                 Input from the user 
+                                   
+                                    Then not follow section 1.3  by the Back end programmer
+
+
+                                                     
+    4)If Bernoulli distribution is selected
+                             
+                                   Select any one item from D4={0,1}
+                                    
+                                     If  ‘1’ is selected
+                                                 Input from the user 
+                                     
+                                     Then follow section 1.4 by the  Backend programmer 
+                                
+                                    If  ‘0’ is selected
+                                                 Input from the user 
+                                   
+                                    Then not follow section 1.4  by the Back end programmer
+
+                                  						   
 	Collect data dynamically and store in Database												
 	Note the time while collecting data and store it along with data												
 	Define the type of data as variable "d"									
