@@ -2,7 +2,8 @@ start
 	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
 	
 	Select the database in which we want to store the data after collection 
-	Let  “ D1 ” denote the variable for Normal distribution
+	
+Let    “ D1 ” denote the variable for Normal distribution
        “ D2 ” denotes the variable for Poisson distribution
        “ D3 ” denotes the variable for Binomial distribution
        “ D4 ” denotes the variable for the Bernoulli distribution
@@ -13,7 +14,7 @@ start
         Input from the user 
 
 
-          Cases: 1) If Normal distribution is selected
+          Cases:      1) If Normal distribution is selected
                              
                                    Select any one item from D1={0,1}
                                     
@@ -58,7 +59,7 @@ start
 
 
                                                      
-    4)If Bernoulli distribution is selected
+                      4)If Bernoulli distribution is selected
                              
                                    Select any one item from D4={0,1}
                                     
