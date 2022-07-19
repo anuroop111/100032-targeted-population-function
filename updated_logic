@@ -1,5 +1,5 @@
 start													
-	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},period ={" last 1 day","last 1week","last 1 month","last 4 months","last 6 months","last 1 year", "life long"} ,type,start point,end point,maximum point,Population Average,range,number of units,first position,last position,proportion,lot size)
+	Call dowelltargetedpopulation function(database,distribution={D1,D2,D3,D4},period ={" last 1 day","last 1 week","last 1 month","last 4 months","last 6 months","last 1 year", "life long"},targeted field name, field name of the event ID ,collection name,field name,type of event, ,type,start point,end point,maximum point, Population Average,range, number of units,first position, last position,proportion, lot size, error)
 	
 	Select the database in which we want to store the data after collection 
 	
@@ -10,10 +10,10 @@ Let    “ D1 ” denote the variable for Normal distribution
 
 
  Select any one item from the list “distribution”
- Select any one item from the list "period"
-     
-        Input from the user 
+      Input from the user 
 
+ Select any one item from the list "period"
+      Input from the user
 
           Cases:      1) If Normal distribution is selected
                              
@@ -24,10 +24,10 @@ Let    “ D1 ” denote the variable for Normal distribution
                                      
                                      Then follow section 1.1 by the  Backend programmer 
                                 
-                                    If  ‘0’ is selected
+                                     If  ‘0’ is selected
                                                  Input from the user 
                                    
-                                    Then not follow section 1.1  by the Back end programmer
+                                     Then not follow section 1.1  by the Back end programmer
 
 
                        2)If Poisson distribution is selected
@@ -53,10 +53,10 @@ Let    “ D1 ” denote the variable for Normal distribution
                                      
                                      Then follow section 1.3 by the  Backend programmer 
                                 
-                                    If  ‘0’ is selected
+                                     If  ‘0’ is selected
                                                  Input from the user 
                                    
-                                    Then not follow section 1.3  by the Back end programmer
+                                     Then not follow section 1.3  by the Back end programmer
 
 
                                                      
@@ -69,10 +69,10 @@ Let    “ D1 ” denote the variable for Normal distribution
                                      
                                      Then follow section 1.4 by the  Backend programmer 
                                 
-                                    If  ‘0’ is selected
+                                     If  ‘0’ is selected
                                                  Input from the user 
                                    
-                                    Then not follow section 1.4  by the Back end programmer
+                                     Then not follow section 1.4  by the Back end programmer
 
                                   						   
 	Collect data dynamically and store in Database												
@@ -281,7 +281,7 @@ Let    “ D1 ” denote the variable for Normal distribution
 		define the maximum point for the whole sample as variable "M"																							
 			Input from frontend programmer or user																						
 		defiine the number of split as variable "k"																							
-		                        input from fronted programmer and user																							
+		                        input from fronted programmer or user																							
 		define the maximum point for ith split as variable "mi"				i=1,2,3,.......k																			
 			Input from frontend programmer or user																						
 			NOTE:  Σ mi = M																						
@@ -309,7 +309,7 @@ Let    “ D1 ” denote the variable for Normal distribution
 		now for ith split fetch data such that split mean "si"  is unbiased estimator of population average A																							
 			define ni as split size		i=1,2,3...... k																				
 		                            repeat this process for k times to form k splits																							
-			Note: Σsi=A																						
+			Note: si=A																						
 		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
 																									
 d=2																									
@@ -350,7 +350,7 @@ d=2
 		now for ith split fetch data such that split mean  "si" is unbiased estimator of population average A																							
 			define ni as split size		i=1,2,3...... k																				
 		                            repeat this process for k times to form k splits																							
-			Note: Σsi= A																						
+			Note: si= A																						
 		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
 																									
 d=3																									
@@ -391,7 +391,7 @@ if Population Average is selected,
 	now for ith split fetch data such that split mean  "si" is unbiased estimator of population average A																								
 		define ni as split size		i=1,2,3...... k																					
 	                            repeat this process for k times to form k splits																								
-		Note: Σsi=  A																							
+		Note: si=  A																							
 	data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																								
 																									
 d=4																									
@@ -431,7 +431,7 @@ d=4
 			now for ith split fetch data such that split mean "si"is unbiased estimator of population average A																						
 				define ni as split size		i=1,2,3...... k																			
 			                            repeat this process for k times to form k splits																						
-				Note: Σsi=  A																					
+				Note: si=  A																					
 			data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																						
 																									
 																									
@@ -482,7 +482,7 @@ d=6
 		now for ith split fetch data such that split mean  "si"is unbiased estimator of population average A																							
 			define ni as split size		i=1,2,3...... k																				
 		                            repeat this process for k times to form k splits																							
-			Note: Σsi=A																						
+			Note: si=A																						
 		data for each split should be fetched from selected dataset such that  mean of the each split is  unbiased estimate of population average																							
 																									
 d=7																									
@@ -496,7 +496,7 @@ d=7
 			User need to select one from the above list																						
 	if proportion is selected,																								
 		define proportion as variable "p"																							
-			What proportion of dataset to be selected as lot?																						
+			What proportion of dataset to be selected as lot																						
 				Input from user																					
 	if random generation is selected,																								
 		Generate random number using inbuilt function to decide lot size 																							
@@ -656,7 +656,7 @@ Shuffle the data
 			If selected sampling method is Simple Random Sampling																						
 				Call dowellrandomsampling()																					
 			If selected sampling method is Simple Random Sampling																						
-				Calldowellstratifiedsampling()																					
+				Call dowellstratifiedsampling()																					
 			Continue this depending on the selections for each stage																						
 																									
 		if for any stage(except first stage) user has entered "0",then the function should stop at that stage only																							
