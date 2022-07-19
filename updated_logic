@@ -17,7 +17,7 @@ Let    “ D1 ” denote the variable for Normal distribution
 
           Cases:      1) If D1=1
                          
-                                     Then follow section 1.1 by the  Backend programmer 
+                                     Then follow section 1.1 
                                 
                          If  D1=0        
                                    
@@ -600,78 +600,7 @@ Shuffle the data
 																									
 	Function output(Acceptance of sample size,evidence,sample size,process time)
 	
-	2.2 Multistage sampling 
-
-	start																									
-	Call dowellmultistagesampling(Number of Stages,First Stage Units,Second Stage units,...)																								
-																									
-		Define number of stages as variable "S"																							
-			Input from user																						
-		Choose sampling method from the list containing all the sampling techniques for First stage units																							
-			Call dowellindex()																						
-				input from user or frontend programmer																					
-		Choose sampling method from the list containing all the sampling techniques for Second stage units																							
-			Call dowellindex()																						
-				input from user or frontend programmer																					
-		Choose sampling method from the list containing all the sampling techniques for Third stage units																							
-			Call dowellindex()																						
-				input from user or frontend programmer																					
-		Continue this depending on number of stages																							
-																									
-		Define number of units to be selected in each stage as variable "si"																							
-			Call dowellsamplesize() for each stage																						
-																									
-			Check number of stages S																						
-				if  1<S<=5,then continue																					
-				if not,prompt " enter adequate number of Stages																					
-																									
-			For first stage,check																						
-				if user has entered "0",then prompt "not allowed"																					
-				Choose from 1 to 12																					
-																									
-			If selected sampling method is Simple Random Sampling																						
-				Call dowellrandomsampling()																					
-			If selected sampling method is Simple Random Sampling																						
-				Call dowellstratifiedsampling()																					
-			Continue this depending on the selections for each stage																						
-																									
-		if for any stage(except first stage) user has entered "0",then the function should stop at that stage only																							
-																									
-																									
-	Function output(sample values at each stage,process time,permutation chosen)	
-	
-	2.3 Index function
-Start																									
-	Call dowellindex function()																								
-																									
-	Display the list of methods containing all sampling techniques named as below																								
-		No sampling -"0"																							
-		Simple random sampling WR -"1"																							
-		Simple random sampling WOR -"2"																							
-		Stratified random sampling WR -"3"																							
-		Stratified random sampling WOR -"4"																							
-		Systematic(Linear) Sampling -"5"																							
-		Circular Systematic Sampling -"6"																							
-		Cluster Sampling -"7"																							
-		Purposive or judgement sampling-"8"																							
-		PPS WR-"9"																							
-		PPS WOR-"10"																							
-		Snowball sampling -"11"																							
-		Quota Sampling-"12"																							
-																									
-																									
-																									
-																									
-	Selection of one method from the list should be done by user																								
-		User has to enter a numeric number 																							
-			if entered number is between 0 to 12,then continue																						
-			if not,then prompt"enter an appropriate number"																						
-																									
-		Display the number and corresponding method under selected method																							
-																									
-	Call dowelleventcreation()																								
-	Function Output(list,selected method,process time)																								
-																									
+																		
 																									
 																									
 																									
