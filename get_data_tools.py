@@ -55,12 +55,10 @@ def get_date(period):
 
 def populate_db_query(time_input, fields):
     event_ids, start_dowell_time, end_dowell_time = fetch_event_ids_from_db(time_input)
-    print('-------------', event_ids)
 
     query = [
         {
             "$match": {
-                # time_input['column_name']: {"$exists": True},
                 'eventId': {'$in': event_ids},
             }
         }
@@ -73,7 +71,7 @@ def populate_db_query(time_input, fields):
 
     if and_array:
         query[0]["$match"]['$and'] = and_array
-    print(query)
+
     return query, start_dowell_time, end_dowell_time
 
 
@@ -94,5 +92,4 @@ def get_data_for_distribution(time_input, database_details):
     query, start_dowell_time, end_dowell_time = populate_db_query(time_input, database_details['fields'])
     data = fetch_data_with_query(query, database_details['collection'], database_details['database'])
 
-    print('data', data)
     return data, start_dowell_time, end_dowell_time
