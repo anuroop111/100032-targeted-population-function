@@ -125,12 +125,14 @@ Give 1 if expecting the output for the respective distribution
 Give 0 if not expecting output for that distribution
 
 ## Output of the api
+### we will get results for the expected distributions and for each distribution will get a list of results. The element/data of the result list will corresponds to the list of provided fields input.
 ###Example output
 ```python
 {
    "normal":{
       "is_error":false,
       "data":[
+      [
          {
             "_id":"61432d8cb65e9b5c90a52aba",
             "Date":"2021-01-15T18:30:00",
@@ -142,6 +144,9 @@ Give 0 if not expecting output for that distribution
             "Process_id":1234,
             "eventId":"FB1010000000016413653685818675"
          },
+       ],
+       [
+       
          {
             "_id":"61432d8cb65e9b5c90a52ab5",
             "Date":"2021-01-10T18:30:00",
@@ -175,6 +180,8 @@ Give 0 if not expecting output for that distribution
             "Process_id":1234,
             "eventId":"FB1010000000016413653685818675"
          }
+       ]
+
       ],
       "sampling_status":false,
       "sampling_status_text":"sample size is not adequate, univariate, 4<=1*10"
