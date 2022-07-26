@@ -121,20 +121,8 @@ $(document).ready(function (event) {
                 contentType: "application/json; charset=utf-8",
                 data:  JSON.stringify(request_data),
                 success: function(data) {
+
                   $("#output-section").html(data);
-
-                  let output_html = ""
-
-                  for(let i=0; i<data["normal"]["data"].length; i++){
-
-                     output_html = output_html + "<h2>" + fields[i] + "</h2>"
-
-                    for(row in data[i]){
-                        output_html = output_html + "<div class='row'><div class='col-3'>" + row['eventId'] +"</div>" + "<div class='col-3'>" + row[fields[i]] +"</div></div>";
-                    }
-                  }
-
-                  $("#output-section").html(output_html);
                 },
 
                 error: function (request, status, error) {

@@ -7,9 +7,9 @@ url = 'http://127.0.0.1:5000/api/targeted_population/'
 
 database_details = {
     'database_name': 'mongodb',
-    'collection': 'licenses',
-    'database': 'license',
-    'fields':['eventId']
+    'collection': 'day001',
+    'database': 'Bangalore',
+    'fields':['C/10001', 'C/10003']
 }
 
 
@@ -36,8 +36,8 @@ stage_input_list = [
 
 # distribution input
 distribution_input={
-    'normal': 1,
-    'poisson':0,
+    'normal': 0,
+    'poisson':1,
     'binomial':0,
     'bernoulli':0
     
@@ -57,5 +57,3 @@ headers = {'content-type': 'application/json'}
 response = requests.post(url, json=request_data,headers=headers)
 
 print(response.text)
-
-

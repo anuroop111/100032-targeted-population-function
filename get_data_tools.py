@@ -30,10 +30,12 @@ def fetch_event_ids_from_db(time_input):
     events_response = event_collection.find(condition)
 
     event_ids = []
+    event_id_key_dict = {}
     for row in events_response:
+        event_id_key_dict[row['eventId']] = row['dowell_time']
         event_ids.append(row['eventId'])
 
-    return event_ids, start_dowell_time, end_dowell_time
+    return event_ids, start_dowell_time, end_dowell_time, event_id_key_dict
 
 
 def get_date(period):
@@ -54,7 +56,7 @@ def get_date(period):
 
 
 def populate_db_query(time_input, fields):
-    event_ids, start_dowell_time, end_dowell_time = fetch_event_ids_from_db(time_input)
+    event_ids, start_dowell_time, end_dowell_time, event_id_key_dict = fetch_event_ids_from_db(time_input)
 
     query = [
         {
@@ -72,7 +74,9 @@ def populate_db_query(time_input, fields):
     if and_array:
         query[0]["$match"]['$and'] = and_array
 
-    return query, start_dowell_time, end_dowell_time
+    # print("query", query)
+
+    return query, start_dowell_time, end_dowell_time, event_id_key_dict
 
 
 def fetch_data_with_query(query, collection, database):
@@ -89,7 +93,7 @@ def fetch_data_with_query(query, collection, database):
 
 
 def get_data_for_distribution(time_input, database_details):
-    query, start_dowell_time, end_dowell_time = populate_db_query(time_input, database_details['fields'])
+    query, start_dowell_time, end_dowell_time, event_id_key_dict = populate_db_query(time_input, database_details['fields'])
     data = fetch_data_with_query(query, database_details['collection'], database_details['database'])
 
-    return data, start_dowell_time, end_dowell_time
+    return data, start_dowell_time, end_dowell_time, event_id_key_dict

@@ -2,7 +2,7 @@ from dowell_time_utils import dowell_time, time_stump_from_days
 from samplingrule.samplingrule import dowellsamplingrule
 
 
-def poisson_distribution(data, start_dowell_time, end_dowell_time, split, stage_inputs, fields, number_of_variable):
+def poisson_distribution(data, start_dowell_time, end_dowell_time, split, stage_inputs, fields, number_of_variable, event_id_key_dict):
     if not fields:
         return_data = {
             "is_error": True,
@@ -18,7 +18,7 @@ def poisson_distribution(data, start_dowell_time, end_dowell_time, split, stage_
         return return_data
 
     split_in_dowell_value = get_dowell_time_value_of_split(split)
-    splatted_data = split_data(data, start_dowell_time, end_dowell_time, split_in_dowell_value)
+    splatted_data = split_data(data, start_dowell_time, end_dowell_time, split_in_dowell_value, event_id_key_dict)
 
     result = splatted_data
     try:
@@ -117,7 +117,7 @@ def generate_split_for_data_type_by_max_sum(max_sum, splatted_data, column_name)
     return result_list_for_stage
 
 
-def split_data(data, start_point, end_point, split):
+def split_data(data, start_point, end_point, split, event_id_key_dict):
     split_results = []
 
     for i in range(start_point, end_point, split):
@@ -125,7 +125,7 @@ def split_data(data, start_point, end_point, split):
         range_end_point = i + end_point
         data_in_range = []
         for d in data:
-            if range_start_point <= dowell_time(d['Date']) < range_end_point:
+            if range_start_point <= event_id_key_dict[d['eventId']] < range_end_point:
                 data_in_range.append(d)
         if data_in_range:
             split_results.append(data_in_range)

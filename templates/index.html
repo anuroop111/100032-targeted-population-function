@@ -19,6 +19,29 @@
 
   <body>
     <form id="targeted-population-form" action="/api/targeted_population" method="POST" target="_blank" class="m-4" enctype="application/json">
+
+        <div class="row">
+            <div class="mb-3 col-3">
+              <input
+                id="username"
+                name="username"
+                type="text"
+                class="form-control"
+                placeholder="user name"
+                disabled
+              />
+            </div>
+            <div class="mb-3 col-3">
+              <input
+                name="password"
+                type="password"
+                class="form-control"
+                placeholder="password"
+                disabled
+              />
+            </div>
+        </div>
+
       <div class="mb-3">
         <select  name="database" class="form-select" aria-label="Default select example">
           <option selected>Select Database</option>
