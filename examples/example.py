@@ -26,7 +26,7 @@ number_of_variables = -1
 
 time_input = {
     'split': 'week',
-    'period': 'life_time',
+    'period': 'last_1_day',
     'start_point': '2021/01/08',
     'end_point': '2021/01/25',
 }
