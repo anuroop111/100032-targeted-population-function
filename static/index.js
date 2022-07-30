@@ -18,7 +18,7 @@ $(document).ready(function (event) {
             period:$("select[name='period']").val(),
             start_point:$("input[name='start_point']").val(),
             end_point: $("input[name='end_point']").val(),
-            split:$("input[name='split']").val(),
+            split:$("select[name='split']").val(),
         }
         const number_of_variable = Number($("input[name='number_of_variable']").val());
 

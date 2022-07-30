@@ -138,7 +138,7 @@ def get_dowell_time_value_of_split(split):
     if split == 'week':
         days = 7
     elif split == 'hour':
-        days = 1/24
+        return 3600
     elif split == 'day':
         days = 1
     elif split == 'month':
