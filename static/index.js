@@ -29,6 +29,13 @@ $(document).ready(function (event) {
             bernoulli:Number($("input[name='bernoulli']").val()),
         }
 
+        const bernoulli = {
+            error_size: Number($("input[name='error_size']").val()),
+            test_number: Number($("input[name='test_number']").val()),
+            selection_start_point: Number($("input[name='selection_start_point']").val()),
+            items_to_be_selected: Number($("input[name='items_to_be_selected']").val()),
+        }
+
         const data_types=[];
         $('input[name="datatype"]').each(function(){
             data_types.push( $(this).val());
@@ -105,11 +112,12 @@ $(document).ready(function (event) {
         }
 
         const request_data ={
-             database_details: database_details,
+            database_details: database_details,
             distribution_input: distribution_input,
             number_of_variable:number_of_variable,
             stages:stage_input_list,
             time_input:time_input,
+            bernoulli:bernoulli,
         }
         console.log(request_data)
         $("#output-section").html("<h2>loading....</h2>");

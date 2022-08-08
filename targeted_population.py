@@ -5,7 +5,7 @@ from binomial_distribution import binomial_distribution
 from bernoulli_distribution import bernoulli_distribution
 
 
-def targeted_population(distribution_input, database_details, time_input, number_of_variable, stage_input_list):
+def targeted_population(distribution_input, database_details, time_input, number_of_variable, stage_input_list, bernoulli):
     data, start_dowell_time, end_dowell_time, event_id_key_dict = get_data_for_distribution(time_input, database_details)
     distribution_results = {}
     fields = database_details['fields']
@@ -54,8 +54,15 @@ def targeted_population(distribution_input, database_details, time_input, number
         distribution_results['binomial'] = binomial_distribution(data, split_variable, split_choice)
 
     if distribution_input['bernoulli'] == 1:
-        test_number=23
-        error=7
-        distribution_results['bernoulli'] = bernoulli_distribution(test_number, error)
+        # error_size = 0.167
+        # test_number = 7
+        # selection_start_point = 500
+        # items_to_be_selected = 600
+
+        error_size = bernoulli["error_size"]
+        test_number = bernoulli["test_number"]
+        selection_start_point = bernoulli["selection_start_point"]
+        items_to_be_selected = bernoulli["items_to_be_selected"]
+        distribution_results['bernoulli'] = bernoulli_distribution(error_size, test_number, selection_start_point, items_to_be_selected, data)
 
     return distribution_results

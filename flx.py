@@ -28,11 +28,11 @@ def targeted_population_json_response():
         number_of_variable = request_data['number_of_variable']
         stage_input_list = request_data['stages']
         time_input = request_data['time_input']
-
         distribution_input = request_data['distribution_input']
+        bernoulli = request_data.get('bernoulli', "")
 
         result = targeted_population(distribution_input, database_details, time_input, number_of_variable,
-                                     stage_input_list)
+                                     stage_input_list, bernoulli)
 
         return JSONEncoder().encode(result)
 
