@@ -1,82 +1,167 @@
-# call eventfunctionreport()
-# test_data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
-#              210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340]
-
-# split_variable = int(input("Input number of variables to split into: "))
-#
-# split_choice = ""
+# split function
+from datetime import datetime
+import requests
 
 
-def binomial_distribution(test_sample, N, split_choice):
-    def condition(list_a, term, cond):  # Function for  success or failure condition
-        for i in range(len(list_a)):
-            for j in range(len(list_a[i])):
-                a = list_a[i][j]
-                if a >= term:
-                    print(str(a) + ' is a success')
-                else:
-                    print(str(a) + ' is a failure')
-        if cond:
-            for k in list_a:
-                count = sum(cond(elem) for elem in k)
-                print(str(count) + " successes")
-        else:
-            count = len(k)
-        return count
+def get_event_id():
+    dd = datetime.now()
+    time = dd.strftime("%d:%m:%Y,%H:%M:%S")
+    url = "https://100003.pythonanywhere.com/event_creation"
 
-    def make_splits(data, SIZE):  # Function splitting my data
-        for i in range(0, len(data), SIZE):
-            yield data[i:i + SIZE]
+    data = {
+        "platformcode": "FB",
+        "citycode": "101",
+        "daycode": "0",
+        "dbcode": "pfm",
+        "ip_address": "192.168.0.41",
+        "login_id": "lav",
+        "session_id": "new",
+        "processcode": "1",
+        "regional_time": time,
+        "dowell_time": time,
+        "location": "22446576",
+        "objectcode": "1",
+        "instancecode": "100051",
+        "context": "afdafa ",
+        "document_id": "3004",
+        "rules": "some rules",
+        "status": "work",
+        "data_type": "learn",
+        "purpose_of_usage": "add",
+        "colour": "color value",
+        "hashtags": "hash tag alue",
+        "mentions": "mentions value",
+        "emojis": "emojis",
 
-    def choice(User_choice, SIZE):  # function for user_choice after choosing to split
-        for i in range(len(z)):
-            if len(z[i]) != SIZE:
-                incomplete = (z[i])
-                if User_choice == "Eliminate":
-                    new_list = z.remove(incomplete)
-                    print(z)
-                    print(str(len(z)) + " splits made from elimination")
-                    condition(z, term=150, cond=lambda x: x >= 150)
+    }
 
-                elif User_choice == "Check Accuracy":
-                    E = float(input("Allowable Error: "))
-                    '''print(SIZE)
-                    print(len(z[i]))'''
-                    if len(z[i]) > (SIZE - E) and len(z[i]) < (SIZE + E):
-                        print(z)
-                        print(str(len(z)) + " splits made by checking accuracy")
-                        condition(z, term=150, cond=lambda x: x >= 150)
+    r = requests.post(url, json=data)
+    return r.text
 
-                    else:
-                        print("Doesn't meet the requirement, exiting now")
 
-    splitted_data = make_splits(test_sample, N)
-    precise_split = list(splitted_data)
-    if len(precise_split[0]) == len(precise_split[-1]):
-        print(precise_split)
-        print(str(len(precise_split)) + " splits made")
-        condition(precise_split, term=150, cond=lambda x: x >= 150)
+def make_splits(data_input, SIZE):
+    for i in range(0, len(data_input), SIZE):
+        yield data_input[i:i + SIZE]
+
+    # function to filter data according to fields
+
+
+def data_filter(data, fields):
+    result = []
+    for field in data["binomial"]:
+        for i in fields:
+            if i in fields:
+                _id = (field[i])
+            result.append({i: _id})
+    return result
+
+
+# Success function
+def condition(list_a, cond):
+    success = []
+    if cond:
+        for k in list_a:
+            count = sum(cond(elem) for elem in k)
+            success.append(str(count) + " Successes")
     else:
-        split_choice = input("calculated or simple split: ")
-        if split_choice == "simple":
-            size = N
-            y = make_splits(test_sample, size)
-            split_decision = input("Eliminate or Check Accuracy: ")
-            z = list(y)
-            print(z)
-            print(str(len(z)) + " splits made")
-            choice(User_choice=split_decision, SIZE=N)
-
-        elif split_choice == "calculated":
-            y = len(test_sample)
-            e = float(input("input marginal error: "))
-            n = y / (1 + (y * (e ** 2)))  # slovens formula for calculating n
-            size = round(n)
-            y = make_splits(test_sample, size)
-            z = list(y)
-            print(z)
-            split_decision = input("Eliminate or Check Accuracy: ")
-            choice(User_choice=split_decision, SIZE=size)
+        count = len(k)
+    return success
 
 
-# binomial_distribution(test_sample=test_data, N=split_variable, split_choice=split_choice)
+# User input for success
+def success_condition_logic(data, user_choice, function):
+    if function is None:
+        pass
+    else:
+        if function == "<":
+            return condition(list_a=data, cond=lambda x: x <= user_choice)
+        elif function == ">":
+            return condition(list_a=data, cond=lambda x: x >= user_choice)
+        elif function == "=":
+            return condition(list_a=data, cond=lambda x: x == user_choice)
+
+
+# Eliminate or Check Accuracy
+def split_decision_function(splitted_data, size, split_decision, error, user_choice, function):
+    for i in range(len(splitted_data)):
+        if len(splitted_data[i]) != size:
+            incomplete = splitted_data[i]
+            if split_decision == "Eliminate":
+                splitted_data.remove(incomplete)
+                s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                return [splitted_data, s, function, user_choice]
+            elif split_decision == "Check_Accuracy":
+                error = float(error)
+                if (size - (error * size)) <= len(incomplete) <= (size + (error * size)):
+                    s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                    return [splitted_data, s, function, user_choice]
+                else:
+                    split_decision == "Eliminate"
+                    splitted_data.remove(incomplete)
+                    s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                    return [splitted_data, s, function, user_choice]
+        else:
+            if len(splitted_data[-1]) == size:
+                s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                return [splitted_data, s, function, user_choice]
+
+
+def binomial_distribution(datas, number_of_variables, split_choice, error, split_decision, user_choice,
+                          function, marginal_error, fields):
+    event_id = {"event_id": get_event_id()}
+    binomial = "binomial"
+    data = data_filter(data={binomial: datas}, fields=fields)
+    if not fields:
+        return_data = {
+            "is_error": True,
+            "error_text": "The fields is empty",
+        }
+        return return_data
+
+    if not data:
+        return_data = {
+            "is_error": True,
+            "error_text": "There is no matching data into that date range",
+        }
+        return return_data
+    elif split_choice == "simple":
+        splitted_data = list(make_splits(data_input=data, SIZE=number_of_variables))
+        if split_decision == "Eliminate":
+            success = split_decision_function(splitted_data=splitted_data, size=number_of_variables,
+                                              split_decision=split_decision, error=0, user_choice=user_choice,
+                                              function=function)
+            return [datas, splitted_data, function, user_choice, success, str(len(splitted_data)) + " splits made",
+                    event_id]
+        elif split_decision == "check_accuracy":
+            success = split_decision_function(splitted_data=splitted_data, size=number_of_variables,
+                                              split_decision=split_decision, error=error, user_choice=user_choice,
+                                              function=function)
+            return [datas, splitted_data, function, user_choice, success, str(len(splitted_data)) + " splits made",
+                    event_id]
+    elif split_choice == "calculated":
+        data_length = len(data)
+        # print(data_length)
+        marginal_error = float(marginal_error)
+        n = (data_length / (1 + (data_length * (marginal_error ** 2))))  # slovens formula
+        calculated_number_of_variables = round(n)
+        # print(calculated_number_of_variables)
+        splitted_data = list(make_splits(data, calculated_number_of_variables))
+        if len(splitted_data[-1]) == len(splitted_data[0]):
+            success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function)
+            return [datas, splitted_data, function, user_choice, success_count,
+                    str(len(splitted_data)) + " splits made", event_id]
+        else:
+            if split_decision == "Eliminate":
+                return split_decision_function(splitted_data=splitted_data, size=calculated_number_of_variables,
+                                               split_decision=split_decision, error=error, user_choice=user_choice,
+                                               function=function)
+            elif split_decision == "check_accuracy":
+                return split_decision_function(splitted_data=splitted_data, size=calculated_number_of_variables,
+                                               split_decision=split_decision, error=error, user_choice=user_choice,
+                                               function=function)
+
+
+    else:
+        splitted_data = list(make_splits(data, number_of_variables))
+        success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function)
+        return [datas, data, splitted_data, function, user_choice, success_count]

@@ -20,7 +20,6 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
     final_result = []
     try:
         for data_key in fields:
-            # df = df.astype({'C/10001': 'float64', 'B/10002': 'float64', 'C/10003': 'float64', 'D/10004': 'float64'})
             # filter for all stages
             df = data
             for stage in stage_input_list:
@@ -70,7 +69,6 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
 def filter_lot_database(df, stage, data_key):
     proportion_selection = stage['p_r_selection']
     first_position = stage['first_position']
-    last_position = stage['last_position']
     dataframe_size = len(df)
 
     if proportion_selection == "proportion":
@@ -197,7 +195,7 @@ def filter_df_max_point(df, column_name, stage):
                 if summation + df[index][column_name] < max_sum_max:
                     taken = taken + 1
                     summation = summation + df[index][column_name]
-                    result.append(df[index][column_name])
+                    result.append(df[index])
                 else:
                     continue
         else:
@@ -209,7 +207,7 @@ def filter_df_max_point(df, column_name, stage):
                     if summation + df[index][column_name] < max_sum_max:
                         taken = taken + 1
                         summation = summation + df[index][column_name]
-                        result.append(df[index][column_name])
+                        result.append(df[index])
                     else:
                         continue
                     break

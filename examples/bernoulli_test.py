@@ -83,12 +83,10 @@ database_details = {
 # number of variables for sampling rule
 number_of_variables = -1
 
-# for first stage it's mandatory to have d=5
-# period can be 'custom' or 'last_1_day' or 'last_30_days' or 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time'
-# if custom is given then need to specify start_point and end_point
-# for others datatpe 'm_or_A_selction' can be 'maximum_point' or 'population_average'
-# the the value of that selection in 'm_or_A_value'
-# error is the error allowed in percentage
+# for first stage it's mandatory to have d=5 period can be 'custom' or 'last_1_day' or 'last_30_days' or
+# 'last_90_days' or 'last_180_days' or 'last_1_year' or 'life_time' if custom is given then need to specify
+# start_point and end_point for others datatpe 'm_or_A_selction' can be 'maximum_point' or 'population_average' the
+# the value of that selection in 'm_or_A_value' error is the error allowed in percentage
 
 
 time_input = {

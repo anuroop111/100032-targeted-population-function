@@ -52,6 +52,11 @@ def targeted_population(distribution_input, database_details, time_input, number
         split_variable = 5
         split_choice = "simple"
         distribution_results['binomial'] = binomial_distribution(data, split_variable, split_choice)
+        number_of_variables=20
+        split_choice = "simple"
+        distribution_results['binomial'] = binomial_distribution(datas=data, number_of_variables=number_of_variables,
+                                                                 split_choice=split_choice, error="0", split_decision="Eliminate",
+                                                                 user_choice={"version_name": "4.2.1"}, function="=", marginal_error="0", fields=fields)
 
     if distribution_input['bernoulli'] == 1:
         # error_size = 0.167

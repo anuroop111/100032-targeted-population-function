@@ -12,12 +12,10 @@ $(document).ready(function (event) {
             fields: fields,
         }
 
-
-
         const time_input={
             period:$("select[name='period']").val(),
-            start_point:$("input[name='start_point']").val(),
-            end_point: $("input[name='end_point']").val(),
+            start_point:$("input[name='start_point_date']").val(),
+            end_point: $("input[name='end_point_date']").val(),
             split:$("select[name='split']").val(),
         }
         const number_of_variable = Number($("input[name='number_of_variable']").val());
@@ -40,7 +38,7 @@ $(document).ready(function (event) {
         $('input[name="datatype"]').each(function(){
             data_types.push( $(this).val());
         });
-
+105, 142, 449
         const m_or_A_selction=[];
         $('select[name="m_or_A_selction"]').each(function(){
             m_or_A_selction.push( $(this).val());
@@ -70,6 +68,8 @@ $(document).ready(function (event) {
         $('input[name="end_point"]').each(function(){
             end_point.push( $(this).val());
         });
+
+        console.log(start_point);
 
 
         const a=[];
