@@ -318,14 +318,8 @@
           </div>
       </div>
 
-      <div class="row">
-        <label>Sampling rule</label>
-        <div class="col">
-          <input name="number_of_variable" type="number" class="form-control" placeholder="number of variable(h)"/>
-        </div>
-      </div>
 
-      <div>Bernoulli inputs</div>
+      <div><b>Bernoulli inputs</b></div>
       <div class="row">
         <div class="col">
            <input name="error_size" type="number" class="form-control" placeholder="error size" step="0.01"/>
@@ -344,13 +338,62 @@
         </div>
       </div>
 
+      <div><b>Binomial inputs</b></div>
+      <div class="row" style="margin-bottom:16px">
+        <div class="col">
+          <select name="split_choice" class="form-select" aria-label="Default select example">
+            <option value="simple" selected>simple</option>
+            <option value="calculated">calculated</option>
+          </select>
+        </div>
+        <div class="col">
+           <input name="marginal_error" type="number" class="form-control" placeholder="marginal_error" value="0" step="0.01"/>
+        </div>
+
+
+        <div class="col">
+          <select name="split_decision" class="form-select" aria-label="Default select example">
+            <option value="Eliminate" selected>Eliminate</option>
+            <option value="Check_Accuracy">Check_Accuracy</option>
+          </select>
+        </div>
+
+        <div class="col">
+           <input name="error" type="number" class="form-control" placeholder="error" value="0" step="0.01"/>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+          <div class="col">
+            <select name="function" class="form-select" aria-label="Default select example">
+              <option value="=" selected>=</option>
+              <option value="<"> "<" </option>
+              <option value=">"> ">" </option>
+            </select>
+          </div>
+
+           <div class="col">
+             <input name="user_choice_field" type="text" class="form-control" placeholder="user choice field"/>
+           </div>
+
+           <div class="col">
+             <input name="user_choice_value" type="text" class="form-control" placeholder="user choice value"/>
+           </div>
+      </div>
+
+      <div class="row">
+        <label><b>Sampling rule</b></label>
+        <div class="col">
+          <input name="number_of_variable" type="number" class="form-control" placeholder="number of variable(h)"/>
+        </div>
+      </div>
+
 
       <button type="submit" class="btn btn-primary">Submit</button>
 
       <div id="output-section"></div>
-      <div id="output-section-poisson"></div>
-      <div id="output-section-bern"></div>
-      <div id="output-section-binomial"></div>
     </form>
 
 

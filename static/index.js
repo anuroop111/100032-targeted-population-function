@@ -34,11 +34,21 @@ $(document).ready(function (event) {
             items_to_be_selected: Number($("input[name='items_to_be_selected']").val()),
         }
 
+        const binomial = {
+            split_choice: $("select[name='split_choice']").val(),
+            marginal_error: Number($("input[name='marginal_error']").val()),
+            split_decision: $("select[name='split_decision']").val(),
+            error: Number($("input[name='error']").val()),
+            function: $("select[name='function']").val(),
+            user_choice_field: $("input[name='user_choice_field']").val(),
+            user_choice_value: $("input[name='user_choice_value']").val(),
+        }
+
         const data_types=[];
         $('input[name="datatype"]').each(function(){
             data_types.push( $(this).val());
         });
-105, 142, 449
+
         const m_or_A_selction=[];
         $('select[name="m_or_A_selction"]').each(function(){
             m_or_A_selction.push( $(this).val());
@@ -118,6 +128,7 @@ $(document).ready(function (event) {
             stages:stage_input_list,
             time_input:time_input,
             bernoulli:bernoulli,
+            binomial:binomial
         }
         console.log(request_data)
         $("#output-section").html("<h2>loading....</h2>");

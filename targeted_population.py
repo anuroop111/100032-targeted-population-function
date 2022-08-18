@@ -5,7 +5,7 @@ from binomial_distribution import binomial_distribution
 from bernoulli_distribution import bernoulli_distribution
 
 
-def targeted_population(distribution_input, database_details, time_input, number_of_variable, stage_input_list, bernoulli):
+def targeted_population(distribution_input, database_details, time_input, number_of_variable, stage_input_list, bernoulli, binomial):
     data, start_dowell_time, end_dowell_time, event_id_key_dict = get_data_for_distribution(time_input, database_details)
     distribution_results = {}
     fields = database_details['fields']
@@ -49,21 +49,26 @@ def targeted_population(distribution_input, database_details, time_input, number
                                                                split, stage_input_list, fields, number_of_variable, event_id_key_dict)
 
     if distribution_input['binomial'] == 1:
-        split_variable = 5
-        split_choice = "simple"
-        distribution_results['binomial'] = binomial_distribution(data, split_variable, split_choice)
-        number_of_variables=20
-        split_choice = "simple"
-        distribution_results['binomial'] = binomial_distribution(datas=data, number_of_variables=number_of_variables,
-                                                                 split_choice=split_choice, error="0", split_decision="Eliminate",
-                                                                 user_choice={"version_name": "4.2.1"}, function="=", marginal_error="0", fields=fields)
+        # split_choice = "simple"
+        # split_decision = "Eliminate"
+        # user_choice = {"version_name": "4.2.1"}
+        # function = "="
+        # marginal_error = "0"
+        # error = 20
+
+        split_choice = binomial['split_choice']
+        split_decision = binomial['split_decision']
+        user_choice = {binomial['user_choice_field']: binomial['user_choice_value']}
+
+        function = binomial['function']
+        marginal_error = binomial['marginal_error']
+        error = binomial['error']
+
+        distribution_results['binomial'] = binomial_distribution(datas=data, number_of_variables=number_of_variable,
+                                                                 split_choice=split_choice, error=error, split_decision=split_decision,
+                                                                 user_choice=user_choice, function=function, marginal_error=marginal_error, fields=fields)
 
     if distribution_input['bernoulli'] == 1:
-        # error_size = 0.167
-        # test_number = 7
-        # selection_start_point = 500
-        # items_to_be_selected = 600
-
         error_size = bernoulli["error_size"]
         test_number = bernoulli["test_number"]
         selection_start_point = bernoulli["selection_start_point"]
