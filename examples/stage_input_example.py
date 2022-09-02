@@ -9,7 +9,7 @@ stage_input_list = [
 
 
      {
-        'data_type':'C/10001',
+        'data_type': 1,
         'm_or_A_selction':'maximum_point',
         'm_or_A_value': 700,
         'error':20,
@@ -19,7 +19,7 @@ stage_input_list = [
         'a': 2,
     },
     {
-        'data_type': 'lot',
+        'data_type': 7,
         'p_r_selection':'proportion',
         'proportion':20,
         'first_position':1,

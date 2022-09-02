@@ -28,7 +28,7 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
                 if d == 0:
                     break
                 if d == 7:
-                    df = filter_lot_database(df, stage, data_key)
+                    df = filter_lot_database(df, stage)
                     if not df:
                         raise Exception('selection is not matching the required lot size')
                     continue
@@ -66,26 +66,30 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
     return result
 
 
-def filter_lot_database(df, stage, data_key):
+def filter_lot_database(df, stage):
     proportion_selection = stage['p_r_selection']
     first_position = stage['first_position']
+    last_position = stage['last_position']
+
     dataframe_size = len(df)
 
     if proportion_selection == "proportion":
-        lot_size = int(dataframe_size * stage['proportion'] / 100)
-        if first_position + lot_size - 1 <= dataframe_size:
-            df = df[first_position - 1:lot_size]
-            return df
-        else:
-            return []
+        lot_size = stage['proportion']
+
+        if last_position - first_position != lot_size:
+            raise Exception("Selection is not matching required lot size")
+        if first_position + lot_size > dataframe_size:
+            raise Exception("first position + lost size is bigger than the data")
+
+        df = df[first_position:lot_size]
+        return df
+
     else:
 
-        random_lot_size = random.randint(0, dataframe_size)
-        if first_position + random_lot_size - 1 > dataframe_size:
-            return []
-        else:
-            df = df[first_position - 1:random_lot_size]
-            return df
+        random_lot_size = random.randint(0, dataframe_size - first_position)
+
+        df = df[first_position:random_lot_size]
+        return df
 
 
 def filter_df_population_average(df, column_name, stage):
@@ -164,7 +168,6 @@ def filter_df_population_average(df, column_name, stage):
 
 
 def filter_df_max_point(df, column_name, stage):
-
     start = float(stage['start_point'])
     r = stage['r']
     range_end = start + r
