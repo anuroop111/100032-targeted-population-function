@@ -518,7 +518,81 @@ d=7
 		if calculated splits is selected,																							
 			Calculate n using slovin's formula for margin of error "e"																						
 				make splits based on n																					
-				count the number of splits obtained																					
+				count the number of splits obtained	
+				
+	if d=2,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained	
+	if d=3,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained	
+	if d=4,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained	
+	if d=5,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained	
+	if d=6,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained	
+	if d=7,																								
+		input N																							
+		fetch data from the selected primary field which counts to N																							
+		input S																							
+			"calculated" or "simple"																						
+		if simple splits is selected																							
+			make splits based on N				splits dynamically or equal																		
+			count the number of splits obtained				accuracy wise	input directly																	
+		if calculated splits is selected,																							
+			Calculate n using slovin's formula for margin of error "e"																						
+				make splits based on n																					
+				count the number of splits obtained				
+				
 Note:	eliminate last split if it is not =N,or check accuracy																								
 		if last split size is not equals to N																							
 			Display list to user containing " eliminate or check accuracy"																						
