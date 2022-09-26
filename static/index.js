@@ -2,8 +2,8 @@ console.log("js loaded");
 
 $(document).ready(function (event) {
 
-    $("#targeted-population-form").submit(function(e) {
-        e.preventDefault();
+    $("#submit-btn").click(function(e) {
+       // e.preventDefault();
         const fields = $("input[name='fields']").val().split(",");
 
         const database_details={
@@ -152,4 +152,63 @@ $(document).ready(function (event) {
         });
 
     });
+
+
+   $("input[name='normal']").change(function(e){
+
+       const normalValue = $("input[name='normal']").val();
+
+       if(normalValue == 1){
+           // To do normal enabled
+
+       }
+
+    });
+
+   $("input[name='poisson']").change(function(e){
+
+       const poissonValue =   $("input[name='poisson']").val();
+
+       if(poissonValue == 1){
+           $("#js-poisson-split").css("display", "block");
+       }else{
+            $("#js-poisson-split").css("display", "none");
+       }
+   });
+
+   $("input[name='bernoulli']").change(function(e){
+
+        const bernoulliValue =   $("input[name='bernoulli']").val();
+
+       if(bernoulliValue == 1){
+           $("#js-bernoulli-inputs-div").css("display", "block");
+       }else{
+            $("#js-bernoulli-inputs-div").css("display", "none");
+       }
+   });
+
+  $("input[name='binomial']").change(function(e){
+
+
+        const binomialValue = $("input[name='binomial']").val();
+
+       if(binomialValue == 1){
+
+
+           $("#js-binomial-div").css("display", "block");
+       }else{
+            $("#js-binomial-div").css("display", "none");
+       }
+
+
+    });
+
 });
+
+
+
+
+
+
+
+

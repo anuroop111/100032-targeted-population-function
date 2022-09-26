@@ -18,6 +18,7 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
         return result
 
     final_result = []
+    sampling_rule = {}
     try:
         for data_key in fields:
             # filter for all stages
@@ -42,20 +43,21 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
 
             final_result.append(df)
 
-        n = len(data)
-
-        if number_of_variable == -1:
-            status = "Not expected"
-            is_acceptable = False
-        else:
-            is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
+            is_acceptable, sample_size, status = dowellsamplingrule(len(final_result), 1, number_of_variable)
+            sampling_rule[data_key] = {
+                "sampling_status": is_acceptable,
+                "sampling_status_text": status,
+            }
 
         result = {
             "is_error": False,
             "data": final_result,
-            "sampling_status": is_acceptable,
-            "sampling_status_text": status,
+
         }
+
+        if number_of_variable > 0:
+            result['sampling_rule'] = sampling_rule
+
 
     except Exception as e:
         result = {
@@ -64,7 +66,6 @@ def normal_distribution(data, stage_input_list, fields, number_of_variable):
         }
 
     return result
-
 
 def filter_lot_database(df, stage):
     proportion_selection = stage['p_r_selection']
