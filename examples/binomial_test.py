@@ -7,9 +7,9 @@ url = 'http://127.0.0.1:5000/api/targeted_population/'
 
 database_details = {
     'database_name': 'mongodb',
-    'collection': 'day001',
+    'collection': 'test',
     'database': 'Bangalore',
-    'fields':['C/10001']
+    'fields':["LENGTH"]
 }
 
 
@@ -55,11 +55,11 @@ distribution_input={
 }
 
 binomial = {
-    'split_choice': "simple",
+    'number_of_variable':13,
+    'split_choice': 'simple',
     'split_decision': "Eliminate",
-    'user_choice_field': "version_name",
-    'user_choice_value': "4.2.1",
-    'function': "=",
+    'user_choice_value': 43,
+    'function': ">",
     'marginal_error': "0",
     'error': 20,
 }

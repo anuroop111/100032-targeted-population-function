@@ -1,11 +1,11 @@
 stage_input_list = [
     {
-        'd': 1,
+        'data_type': 1,
         'm_or_A_selction': 'maximum_point',#'population_average'
         'm_or_A_value': 500,
         'error': 10,
     },
-]
+
 
 
      {
@@ -26,3 +26,4 @@ stage_input_list = [
         'last_position':2,
 
     }
+]
