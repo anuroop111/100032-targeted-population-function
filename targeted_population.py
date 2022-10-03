@@ -55,18 +55,18 @@ def targeted_population(distribution_input, database_details, time_input, number
         # function = "="
         # marginal_error = "0"
         # error = 20
-
+        
         split_choice = binomial['split_choice']
         split_decision = binomial['split_decision']
-        user_choice = {binomial['user_choice_field']: binomial['user_choice_value']}
-
+        user_choice = binomial['user_choice_value']
+        number_of_variable=binomial["number_of_variable"]
         function = binomial['function']
         marginal_error = binomial['marginal_error']
         error = binomial['error']
 
         distribution_results['binomial'] = binomial_distribution(datas=data, number_of_variables=number_of_variable,
                                                                  split_choice=split_choice, error=error, split_decision=split_decision,
-                                                                 user_choice=user_choice, function=function, marginal_error=marginal_error, fields=fields)
+                                                                 user_choice=user_choice, function=function, marginal_error=marginal_error, fields=fields, stage_input="")
 
     if distribution_input['bernoulli'] == 1:
         error_size = bernoulli["error_size"]
