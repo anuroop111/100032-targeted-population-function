@@ -21,25 +21,18 @@ def poisson_distribution(data, start_dowell_time, end_dowell_time, split, stage_
 
     split_in_dowell_value = get_dowell_time_value_of_split(split)
     splatted_data = split_data(data, start_dowell_time, end_dowell_time, split_in_dowell_value, event_id_key_dict)
+    print("spilleddddd", len(splatted_data))
 
     # try:
     result = []
     for field in fields:
-        single_field_result = poisson_split(splatted_data, stage_inputs, 0, field)
+        single_field_result = poisson_split(splatted_data, stage_inputs, 0, field, number_of_variable)
         result.append(single_field_result)
 
-    n = len(result)
-    if number_of_variable == -1:
-        status = "Not expected"
-        is_acceptable = False
-    else:
-        is_acceptable, sample_size, status = dowellsamplingrule(n, 1, number_of_variable)
 
     return_data = {
         "is_error": False,
         "data": result,
-        "sampling_status": is_acceptable,
-        "sampling_status_text": status,
     }
 
     # except Exception as e:
@@ -51,7 +44,7 @@ def poisson_distribution(data, start_dowell_time, end_dowell_time, split, stage_
     return return_data
 
 
-def poisson_split(splatted_array, stage_inputs, current_stage, field):
+def poisson_split(splatted_array, stage_inputs, current_stage, field, number_of_variable):
     if current_stage == len(stage_inputs):
         return splatted_array
 
@@ -64,20 +57,30 @@ def poisson_split(splatted_array, stage_inputs, current_stage, field):
     if stage_inputs[current_stage]['data_type'] == '7':
         pass
 
+    print("splatted array len ", len(splatted_array))
+
     result = []
     for array in splatted_array:
-        if m_or_a_selection == 'maximum_point':
-            new_spatted_array = generate_split_for_data_type_by_max_sum(m_or_a_value, array, field,
-                                                                        stage_inputs[current_stage]['error'])
-        else:
-            new_spatted_array = generate_split_for_data_type_by_population_average(m_or_a_value,
-                                                                                   array, field,
-                                                                                   stage_inputs[current_stage]['error'])
-        r = poisson_split(new_spatted_array, stage_inputs, current_stage + 1, field)
-        if r:
+        array_result = normal_distribution(array, stage_inputs, [field], number_of_variable)
+        # if m_or_a_selection == 'maximum_point':
+        #     new_spatted_array = generate_split_for_data_type_by_max_sum(m_or_a_value, array, field,
+        #                                                                 stage_inputs[current_stage]['error'])
+        # else:
+        #     new_spatted_array = generate_split_for_data_type_by_population_average(m_or_a_value,
+        #                                                                            array, field,
+        #                                                                            stage_inputs[current_stage]['error'])
+        # r = poisson_split(new_spatted_array, stage_inputs, current_stage + 1, field)
+        # if r:
+        #     result.append(r)
+
+        if not array_result['is_error']:
+
+            r = {
+                'data': array_result['data'][0],
+                'sampling_rule': array_result['sampling_rule'][field]
+            }
             result.append(r)
 
-    print("result len ", len(result))
     return result
 
 
@@ -90,7 +93,7 @@ def generate_split_for_data_type_by_population_average(population_average, array
     summation = 0
     taken = 0
     for d in array:
-        print("list up to pa", list_up_to_pa)
+
         expected_average = (summation + d[column_name]) / (taken + 1)
 
         if population_average_min <= expected_average <= population_average_max:
@@ -134,24 +137,24 @@ def generate_split_for_data_type_by_max_sum(max_sum, array, column_name, error_p
 
 
 def split_data(data, start_point, end_point, split, event_id_key_dict):
-    split_results = []
-    c = 0
-    for i in range(start_point, end_point, split):
-        c = c + 1
 
+    ranges = []
+    result_array = []
+    for i in range(start_point, end_point, split):
         range_start_point = i
         range_end_point = i + split
+        sr = (range_start_point, range_end_point)
+        ranges.append(sr)
+        result_array.append([])
 
-        data_in_range = []
-        for d in data:
-            if range_start_point <= event_id_key_dict[d['eventId']] < range_end_point:
-                data_in_range.append(d)
+    for d in data:
+        for i in range(0, len(ranges)):
+            if ranges[i][0] <= event_id_key_dict[d['eventId']] < ranges[i][1]:
+                result_array[i].append(d)
+                break
 
-        if data_in_range:
-            split_results.append(data_in_range)
 
-    print("split len", len(split_results))
-    return split_results
+    return result_array
 
 
 def get_dowell_time_value_of_split(split):

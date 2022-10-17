@@ -41,7 +41,7 @@ $(document).ready(function (event) {
             error: Number($("input[name='error']").val()),
             function: $("select[name='function']").val(),
             user_choice_field: $("input[name='user_choice_field']").val(),
-            user_choice_value: $Number("input[name='user_choice_value']").val(),
+            user_choice_value: Number($("input[name='user_choice_value']").val()),
         }
 
         const data_types=[];
