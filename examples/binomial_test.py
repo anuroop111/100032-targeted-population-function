@@ -9,7 +9,7 @@ database_details = {
     'database_name': 'mongodb',
     'collection': 'test',
     'database': 'Bangalore',
-    'fields':["LENGTH"]
+    'fields':["AREA"]
 }
 
 
