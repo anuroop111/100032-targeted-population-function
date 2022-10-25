@@ -59,7 +59,7 @@ def targeted_population(distribution_input, database_details, time_input, number
         split_choice = binomial['split_choice']
         split_decision = binomial['split_decision']
         user_choice = binomial['user_choice_value']
-        
+        #number_of_variable=binomial["number_of_variable"]
         function = binomial['function']
         marginal_error = binomial['marginal_error']
         error = binomial['error']

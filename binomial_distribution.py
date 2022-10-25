@@ -69,14 +69,15 @@ def data_filter(data, fields,stage_inputs, current_stage):
 def condition(list_a, cond,field):
     success = []
     if cond:
-        for i in field:
-            if i in field:
-                for k in list_a:
-                    try:
-                        count = sum(cond(elem[i]) for elem in k)
-                        success.append(str(count) + " Successes")
-                    except KeyError:
-                        continue                   
+       for k in list_a:
+            try:
+                i = 0
+                while i < len(field):
+                    count = sum(cond(elem[field[i]]) for elem in k)
+                    success.append(str(count) + " Successes")
+                    i+=1 
+            except KeyError:
+                pass                   
     else:
         count = len(k)
     return success
@@ -108,23 +109,22 @@ def split_decision_function(splitted_data, size, split_decision, error, user_cho
             elif split_decision == "Check_Accuracy":
                 error = float(error)
                 if (size - (error * size)) <= len(incomplete) <= (size + (error * size)):
-                    s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                    s = success_condition_logic(splitted_data,field=field, user_choice=user_choice, function=function)
                     return [splitted_data, s, user_choice]
                 else:
                     split_decision == "Eliminate"
                     splitted_data.remove(incomplete)
-                    s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                    s = success_condition_logic(splitted_data,field=field, user_choice=user_choice, function=function)
                     return [splitted_data, s, user_choice]
         else:
             if len(splitted_data[-1]) == size:
-                s = success_condition_logic(splitted_data, user_choice=user_choice, function=function)
+                s = success_condition_logic(splitted_data,field=field, user_choice=user_choice, function=function)
                 return [splitted_data, s, user_choice]
 
 
 def binomial_distribution(datas, number_of_variables, split_choice, error, split_decision, user_choice,stage_input,
                           function, marginal_error, fields):
-    event_id = "eventID"
-    #{"event_id": get_event_id()}
+    event_id = {"event_id": get_event_id()}
     binomial = "binomial"
     data = data_filter(data={binomial: datas}, fields=fields, stage_inputs=stage_input, current_stage=0)
     if not fields:
