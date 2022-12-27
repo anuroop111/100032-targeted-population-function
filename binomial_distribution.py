@@ -162,7 +162,7 @@ def binomial_distribution(datas, number_of_variables, split_choice, error, split
         # print(calculated_number_of_variables)
         splitted_data = list(make_splits(data, calculated_number_of_variables))
         if len(splitted_data[-1]) == len(splitted_data[0]):
-            success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function)
+            success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function, field=fields)
             return [datas, splitted_data, user_choice, success_count, str(len(splitted_data)) + " splits made", event_id]
         else:
             if split_decision == "Eliminate":
@@ -177,5 +177,5 @@ def binomial_distribution(datas, number_of_variables, split_choice, error, split
 
     else:
         splitted_data = list(make_splits(data, number_of_variables))
-        success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function)
+        success_count = success_condition_logic(data=splitted_data, user_choice=user_choice, function=function, field=fields)
         return [datas, data, splitted_data, user_choice, success_count]
