@@ -1,0 +1,59 @@
+Targeted population R codes(data retrieval)
+install.packages("reticulate")
+library(reticulate)
+
+py_code <- "
+import json
+import requests
+
+url = 'http://100032.pythonanywhere.com/api/targeted_population/'
+
+database_details = {
+    'database_name': 'mongodb',
+    'collection': 'day001',
+    'database': 'Bangalore',
+    'fields':['C/10001']
+}
+
+# number of variables for sampling rule
+number_of_variables = 1
+
+time_input = {
+    'column_name': 'Date',
+    'period': 'life_time',
+    'start_point': '2021/01/08',
+    'end_point': '2021/01/28',
+    'split': 'week'
+}
+
+stage_input_list = [
+]
+
+distribution_input={
+    'normal': 1,
+    'poisson':1,
+    'binomial':0,
+    'bernoulli':0
+
+}
+
+request_data={
+    'database_details': database_details,
+    'distribution_input': distribution_input,
+    'number_of_variable':number_of_variables,
+    'stages':stage_input_list,
+    'time_input':time_input,
+}
+
+headers = {'content-type': 'application/json'}
+
+response = requests.post(url, json=request_data,headers=headers)
+
+response_data = response.json()
+
+print(response.text)
+"
+
+output <- py_run_string(py_code)
+
+print(output)
